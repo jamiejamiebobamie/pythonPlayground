@@ -39,32 +39,18 @@ import random
 import re
 import sys
 
-# Complete the minimumBribes function below.
-def minimumBribes(q):
+def minimumBribes(q): #O(n**2) time complexity
     minB = 0
-    q.reverse()
+    q.reverse() #this adds to time complexity, but you want to handle the back of the line first, by iterating through them first, because you only move forward in line, so person 1 and person 2 are less important
     for i, b in enumerate(q):
-        if len(q) - i != b:
-            print((b, b - (len(q) - i)))
-            if b - (len(q) - i) > 0:
-                if b - (len(q) - i) < 3:
-                    minB += b - (len(q) - i)
+        if len(q) - i != b: #if the item is out of place
+            # print((b, b - (len(q) - i)))
+            if b - (len(q) - i) > 0: #check to see if it's moved upward
+                if b - (len(q) - i) < 3: #check to see if it's moved more than two spaces up
+                    minB += b - (len(q) - i) #if it hasn't moved more than two, add the number it has moved to the total bribes
                 else:
-                    return "Too chaotic."
-    return minB
-
-            #     minB += b - (len(q) - i)
-            # else:
-            #
-            # if len(q) - i - 1 == b:
-            #     minB += 1
-            #     continue
-            # elif len(q) - i - 2 == b:
-            #     minB += 2
-            #     continue
-            # elif :
-    #             return "Too chaotic."
-    # return minB
+                    return "Too chaotic." #if it has moved more than two, exit the function and arrest the cheaters!
+    return minB #return the total bribes.
 
 
 # if __name__ == '__main__':
