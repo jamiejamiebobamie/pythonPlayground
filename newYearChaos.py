@@ -54,7 +54,7 @@ def minimumBribes(q): #O(n**2) time complexity
                 if b > q[i+1]:
                     minB += 1
                 if b > q[i+2]:
-                    minB += 1
+                    minB += 2
     return minB #return the total bribes.
 
 
@@ -69,7 +69,8 @@ def minimumBribes(q): #O(n**2) time complexity
 #         minimumBribes(q)
 
 
-q = [1,2,5,3,7,8,6,4]
+# q = [1,2,5,3,7,8,6,4]
+q = [1,2,5,3,7,6,8,4]
 
 p = [9,2,3,4,5,6,7,8]
 
