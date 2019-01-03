@@ -50,11 +50,17 @@ def minimumBribes(q): #O(n**2) time complexity
                     minB += b - (len(q) - i) #if it hasn't moved more than two, add the number it has moved to the total bribes
                 else:
                     return "Too chaotic." #if it has moved more than two, exit the function and arrest the cheaters!
-            else:#check to see if items are moving forward but still behind
-                if b > q[i+1]:
-                    minB += 1
-                if b > q[i+2]:
-                    minB += 2
+            else:#check to see if items are moving forward but still behind where they should be
+                try:
+                    if b > q[i-1]:
+                        minB += 1
+                except:
+                    continue
+                # try:
+                #     if b > q[i+2]:
+                #         minB += 2 #I'm not sure if this ever happens.
+                # except:
+                #     continue
     return minB #return the total bribes.
 
 
@@ -68,9 +74,11 @@ def minimumBribes(q): #O(n**2) time complexity
 #
 #         minimumBribes(q)
 
+# 1 2 5 3 7 8 6 4
+q = [1,2,5,3,7,8,6,4]
+#q = [3,1,2,6,5,8,7,4]
+# q = [1,3,2,6,5,7,4,8,9]
 
-# q = [1,2,5,3,7,8,6,4]
-q = [1,2,5,3,7,6,8,4]
 
 p = [9,2,3,4,5,6,7,8]
 
