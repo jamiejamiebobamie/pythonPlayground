@@ -25,20 +25,19 @@ for i, row in enumerate(rows):
     matrix.append((rows[i],columns[i]))
 
 print(matrix)
-
-
+# 
+#
 # square = [0,1,2,3,4]
 #
 # grid = []
 #
 # for i, block in enumerate(square):
 #     k = random.randint(i,len(square)-1)
-#     block[i], block[k] = block[k], block[i]
-#     grid.append(list(block[i]))
-#
-# for i, block in enumerate(square):
+#     row = block[k]
 #     k = random.randint(i,len(square)-1)
-#     block[i], block[k] = block[k], block[i]
-#     grid.append([block[i]])
+#     column = block[k]
+#     grid.append((row, column))
+#
+#
 #
 # print(grid)
