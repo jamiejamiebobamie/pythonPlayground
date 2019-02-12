@@ -36,16 +36,25 @@ array =           [[10, 33, 13, 15],
                   [0, 6, 14, 2]]
 
 def getMoney(array):
+
     choices = []
-    for column in range(len(array[0])):
+    for column in range(len(array[0])): #the miner moves from the rightmost column (index 0) to the leftmost column (index len(array))
         block = []
         for row in range(len(array)):
-            block.append(array[row][column])
-        choices.append(max(block))
+            block.append((array[row][column],row))
+        # if abs((block[len(block)-1])[1] - block[len(block)-2][1]) < 3:
+            choices.append(max(block))
+            print(choices)
+            if column > 1:
+                while (abs(choices[-1][1] - choices[-2][1])) > 3:
+                    choices.pop()
+                    block.pop(row*column)
+                    choices.append(max(block))
+
     return choices
 
-
-print(getMoney(array))
+getMoney(array)
+# print(getMoney(array))
 # Input : mat[][] = {{1, 3, 3},
 #                    {2, 1, 4},
 #                   {0, 6, 4}};
