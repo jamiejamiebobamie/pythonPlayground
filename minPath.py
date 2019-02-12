@@ -90,10 +90,10 @@ array =  [
 ]
 
 class Node:
-     def __init__(self, leftNode=None, rightNode=None):
+     def __init__(self, downNode=None, rightNode=None):
          self.index = None
          self.value = None
-         self.left = leftNode
+         self.down = downNode
          self.right = rightNode
 
 root = Node()
@@ -103,16 +103,23 @@ current = root
 moves = 0
 rowI = 0
 colI = 0
-while moves < len(array)+2:
+# while moves < len(array)+2:
+for rowI in range(len(array)):
+    for colI in range(len(array[0])):
     if rowI+1 < len(array) and colI+1 < len(array[0]):
-        current
-        dict[rowI+1,colI] = array[rowI+1][colI]
-        dict[rowI,colI+1] = array[rowI][colI+1]
+        current.down = array[rowI][colI+1]
+        current.right = array[rowI+1][colI]
     elif rowI+1 < len(array):
-        dict[rowI+1,colI] = array[rowI+1][colI]
+        current.right = array[rowI+1][colI]
     elif colI+1 < len(array[0]):
-        dict[rowI,colI+1] = array[rowI][colI+1]
-    moves += 1
+        current.down = array[rowI][colI+1]
+    rowI += 1
+    colI += 1
+    current = Node()
+    # moves += 1
+
+# Someday pretty baby.
+
 
 # I have other things to do... it's intelligent to make a tree of nodes
 # with each node being a place in the array and with the node's children
