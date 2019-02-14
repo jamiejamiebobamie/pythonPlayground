@@ -6,7 +6,7 @@
 # Given [[0, 30],[5, 10],[15, 20]],
 # return 2.
 
-array = [[0, 30],[5, 10],[15, 20]]
+array = [[0, 30],[5,10],[15, 20], [2,40], [5,10], [0,10],[35,35],[0,60],[5,8],[45,60],[8,10],[3,10]]
 
 def meeting(array):
     dict = {}
@@ -14,22 +14,27 @@ def meeting(array):
     time, max, min = 0, 0, array[0][0]
     count = len(rooms)
     for a in array:
-        dict[a[0]] = a[1]
+        if a[0] not in dict:
+            dict[a[0]] = [a[1]]
+        else:
+            dict[a[0]].append(a[1])
         if a[0] < min:
             min = a[0]
         if a[1] > max:
             max = a[1]
+    # print(dict)
     while time < max+1:
         if time in dict:
-            rooms.append(dict[time])
+            for entry in dict[time]:
+                rooms.append(entry)
         if time in rooms:
             for i, item in enumerate(rooms):
                 if item == time:
                     rooms.pop(i)
-        # print(time, count, rooms)
         if len(rooms) > count:
             count = len(rooms)
         time += 1
+        print(time, count, rooms)
     return count
 
 print(meeting(array))
