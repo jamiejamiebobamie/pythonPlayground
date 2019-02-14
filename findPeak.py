@@ -18,11 +18,17 @@ from collections import deque as d
 
 array = [10, 20, 15, 2, 23, 90, 67]
 
-array = [100, 80, 60, 50, 20]
-
-array = [0,0,0,0,0,0,0,0,0]
+# array = [100, 80, 60, 50, 20]
+#
+# array = [0,0,0,0,0,0,0,0,0]
+#
+# array = [0,1,2,3,4,5,6,7,8,9,10]
+#
+# array = [10,9,8,7,6,5,4,3,2,1]
 
  #negative values???
+ #this solution does not account for negative values due to the added zeroes
+    #at the front and back of the list and queue
 
 def findPeak(array):
 
@@ -34,7 +40,6 @@ def findPeak(array):
     for item in array:
         if len(queue) < 3:
             queue.append(item)
-        # print(queue, peaks)
         if len(queue) == 3:
             if queue[1] >= queue[0] and queue[1] >= queue[2]:
                 peaks.append(queue[1])
