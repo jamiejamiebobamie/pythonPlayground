@@ -21,16 +21,7 @@
 # The input array words contains at least one word.
 # Example 1:
 #
-# Input:
-# words = ["This", "is", "an", "example", "of", "text", "justification."]
-# maxWidth = 16
-# Output:
-# [
-#    "This    is    an",
-#    "example  of text",
-#    "justification.  "
-# ]
-# Example 2:
+
 #
 # Input:
 # words = ["What","must","be","acknowledgment","shall","be"]
@@ -60,17 +51,56 @@
 #   "do                  "
 # ]
 
+# Input:
+# words = ["This", "is", "an", "example", "of", "text", "justification."]
+# maxWidth = 16
+# Output:
+# [
+#    "This    is    an",
+#    "example  of text",
+#    "justification.  "
+# ]
+# Example 2:
+
 array = ["This", "is", "an", "example", "of", "text", "justification."]
 
 def justify(array, width):
-    ar = []
-    line = ''
-    i = 0
-    while
-    while len(line) < width:
-        line += array[i] + " "
+    size = len(array)
+    a = []
+    while len(array) > 0:
+            arr = []
+            count = 0
+            while count < width and len(array) != 0:
+                if count + len(array[-1]) + len(arr) < width:
+                    if len(array) == size:
+                        count += len(array[-1])
+                        arr.append(" "*(width - count))
+                        arr.append(array.pop(-1))
+                    else:
+                        count += len(array[-1])
+                        arr.append(array.pop(-1))
+                else:
+                    count = (width - count)//len(arr)
+                    for word in arr:
+                        word += " "*count
+                    a.append([list(reversed(arr)), count])
+                    break
+            else:
+                a.append([list(reversed(arr)), width - ((width - count)//len(arr))*count ])
+                break
+    return a
+    # else:
+    #     return "sorry one or more of your words is too big for the width."
 
-        i += 1
-    print(line)
+    #
+    # ar = []
+    # line = ''
+    # i = 0
+    # while
+    # while len(line) < width:
+    #     line += array[i] + " "
+    #
+    #     i += 1
+    # print(line)
 
-justify(array, 16)
+print(list(reversed(justify(array, 16))))
