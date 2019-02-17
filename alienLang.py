@@ -175,22 +175,28 @@ def letterOrder(array):
     A = []
     i = 0
     wordCount = len(max(array))
-    print(wordCount)
+    stored = array[0][0]
+    print(stored)
     while wordCount > 0:
-        arr = []
-        store = ''
-        for word in array:
+        for j, word in enumerate(array):
+            seen = []
             if i < len(word):
-                if word[i] != store:
-                    arr.append(store)
-                    store = word[i]
+                if word[i] not in A:
+                    A.append(word[i])
+        i += 1
+        wordCount -=1
+    return A
+
+
+print(letterOrder(array))
+
 
                     #   Letters can occur twice,
                     #   but they cannot occur
                     #   twice in the same index of different words
                     #   after not occuring once.
 
-                    #   Example 'n' in the second index.
+                    #   Example 'n' in the second index:
                     #   another
                     #   ant
                     #   ape
@@ -200,21 +206,8 @@ def letterOrder(array):
                     #   after a change in index
                     #   that stores letters
                     #   that have come before
-                    #   and been followed by a new letter
+                    #   and have been followed by a new letter
 
                     #   Example above:
                     #   'n' would get pushed to the array once 'p' in 'ape'
                     #   was operated on.
-
-
-                if word[i] not in arr:
-                    A.append(word[i])
-                else:
-                    return ''
-        A.append(arr)
-        i += 1
-        wordCount -=1
-    return A
-
-
-print(letterOrder(array))
