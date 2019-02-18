@@ -1,11 +1,16 @@
-'''Trying to write an autocomplete function using a Trie. It's not working out.'''
+'''Wrote an autocomplete function. Type a word wrapped in strings into the
+first arugment of the findWord() function at the bottom to generate all possibilites.
+
+TO-DO: Organize code into classes within classes and methods within classes.'''
+
+
 
 import random
 
 def dict():
-    """opens the dictionary-words file at the path and assigns the file to f
-    reads f and splits each word into an array element of the words array
-    closes the file f
+    """opens the dictionary-words file at the path and assigns the file to 'f'
+    reads 'f' and splits each word into an array element of the 'words' array
+    closes the file 'f'
     and returns the array of dictionary words
     """
     f = open("/usr/share/dict/words", "r")
@@ -63,7 +68,7 @@ root = buildTrie(array)
 #     print(key)
 
 def findWords(pre, root):
-    # alpha = list('abcdefghijklmnopqrstuvwxyz')
+    alpha = list('abcdefghijklmnopqrstuvwxyz')
     # print(alpha)
     # def rec(pre, node):
     #     word = pre
@@ -84,27 +89,38 @@ def findWords(pre, root):
     for char in pre: #move up to the correct point in the dictionary
         if char in current.dict:
             current = current.dict[char]
-            print(char)
+            # print(char)
         # else:
         #     return 'no words exist in English that start like that'
 
     known = current #the correct point in the tree based on the prefix
     suffixCount = known.count
-    # print(suffixCount)
+    print(suffixCount)
 
     # while suffixCount > 0:
 
-    def goIn(node):
+    def goIn(node, w, sC):
+        co = sC #passing off the suffix count to the interior scope
         # depthChars = node.dict.keys()
         for key in node.dict:
-            print(node.dict[key].value,node.dict[key].depth)
-            # w.append(node.dict[key].value)
-            # if node.dict[key].end == True:
-            #     break
-            goIn(node.dict[key])
+            c = w
+            # print(node.dict[key].value,node.dict[key].depth)
+            c += node.dict[key].value
+            # print(node.dict[key].count)
+            # print(c)
+            if node.dict[key].end == True:
+                words.append(c)
+                if co < 0: # if the suffix you enter is a complete word (like 'ant')...
+                    return c
+                else:
+                    co -= 1
+                # print(c, True, words)
+                # w = ''
+            goIn(node.dict[key], c, co)
             # return node.dict[key].value
 
-    words.append(goIn(known))
+    # words.append(goIn(known, pre))
+    goIn(known, pre, suffixCount)
 
 
 
@@ -126,5 +142,20 @@ def findWords(pre, root):
     # words.append(rec(word, known))
     return words
 
+print(findWords('ant', root)) #type in prefix
 
-print(findWords('aard', root))
+# alpha = list('abcdefghijklmnopqrstuvwxyz')
+#
+# current = root
+# alphabetTest = []
+# for _ in range(len(alpha)):
+#     max = [None,0]
+#     for key in current.dict:
+#         if max[1] < current.dict[key].count:
+#             max[0] = current.dict[key].value
+#             max[1] = current.dict[key].count
+#     alphabetTest.append(max)
+#     if alpha[_] in current.dict:
+#         current = current.dict[alpha[_]]
+#
+# print(alphabetTest)
