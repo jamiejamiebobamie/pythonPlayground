@@ -1,7 +1,11 @@
-'''Wrote an autocomplete function. Type a word wrapped in strings into the
-first arugment of the findWord() function at the bottom to generate all possibilites.
+'''An autocomplete function. Type a word wrapped in strings into the
+first arugment of the findWord() function at the bottom to generate
+all possibile words that can be made with that prefix.
 
-TO-DO: Organize code into classes within classes and methods within classes.'''
+TO-DO: Organize code into classes within classes and methods within classes.
+       Be able to call function from terminal with desired prefix.
+       Make a website that hosts the built Trie in a database and pulls from it
+       dynamically and displays the possibilites as the user types.'''
 
 
 
@@ -68,7 +72,7 @@ root = buildTrie(array)
 #     print(key)
 
 def findWords(pre, root):
-    alpha = list('abcdefghijklmnopqrstuvwxyz')
+    # alpha = list('abcdefghijklmnopqrstuvwxyz')
     # print(alpha)
     # def rec(pre, node):
     #     word = pre
@@ -142,7 +146,7 @@ def findWords(pre, root):
     # words.append(rec(word, known))
     return words
 
-print(findWords('ant', root)) #type in prefix
+print(findWords('pa', root)) #type in prefix
 
 # alpha = list('abcdefghijklmnopqrstuvwxyz')
 #
