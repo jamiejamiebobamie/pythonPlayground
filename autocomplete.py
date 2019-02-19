@@ -115,7 +115,7 @@ def findWords(pre, root):
             if node.dict[key].end == True:
                 words.append(c)
                 if co < 0: # if the suffix you enter is a complete word (like 'ant')...
-                    return c
+                    return c # don't stop until all of the suffixes have been exhausted
                 else:
                     co -= 1
                 # print(c, True, words)
@@ -146,7 +146,7 @@ def findWords(pre, root):
     # words.append(rec(word, known))
     return words
 
-print(findWords('pa', root)) #type in prefix
+print(findWords('pre', root)) #type in prefix
 
 # alpha = list('abcdefghijklmnopqrstuvwxyz')
 #

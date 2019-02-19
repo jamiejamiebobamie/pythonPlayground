@@ -36,19 +36,19 @@
 
 
 # class Solution:#: 'List[int]') -> 'List[int]':
-def asteroidCollision(asteroid):
-    while check(asteroid):
-        for i, a in enumerate(asteroid):
+def asteroidCollision(asteroids):
+    while check(asteroids):
+        for i, a in enumerate(asteroids):
             if a < 0 and i != 0:
-                if asteroid[i-1] > 0:
-                    if abs(a) < asteroid[i-1]:
-                        asteroid.pop(i)
-                    elif abs(a) > asteroid[i-1]:
-                        asteroid.pop(i-1)
+                if asteroids[i-1] > 0:
+                    if abs(a) < asteroids[i-1]:
+                        asteroids.pop(i)
+                    elif abs(a) > asteroids[i-1]:
+                        asteroids.pop(i-1)
                     else:
-                        asteroid.pop(i)
-                        asteroid.pop(i-1)
-        print(asteroid)
+                        asteroids.pop(i)
+                        asteroids.pop(i-1)
+        # print(asteroid)
 
 
 def check(array):

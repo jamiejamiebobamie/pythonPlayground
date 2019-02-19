@@ -1,8 +1,8 @@
 # https://www.hackerrank.com/challenges/ctci-balanced-brackets/problem
 
-# string = "(j)(d(ffd)s)a)a)s)"
-string = "))"
-# string = "(((())))"
+string = "(j)(d(ffd)s)a)a)s)"
+#string = "))"
+#string = "(((())))"
 # string = "((((("
 
 def balanced(s):
