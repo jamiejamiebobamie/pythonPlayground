@@ -10,6 +10,10 @@ import sys
 class Trie:
     """A Trie specificially made to hold a dictionary of words."""
 
+    def __init__(self):
+        self.array = self.dict() #Array of dictionary words
+        self.root = self.buildTrie(self.array)
+
     class TrieNode:
         def __init__(self, value=None, i=None):
             self.value = value
@@ -43,23 +47,8 @@ class Trie:
         f.close()
         return words
 
-    def __init__(self):
-        self.array = self.dict() #Array of dictionary words
-        self.root = self.buildTrie(self.array) #Would these methods get hoisted if __init__ was above them?
-
     def findWords(self, pre):
-        word = pre
-        words = []
-        current = self.root
-
-        for char in pre: #move up to the correct point in the dictionary
-            if char in current.dict:
-                current = current.dict[char]
-
-        known = current #the correct point in the tree based on the prefix
-        suffixCount = known.count
-
-        def goIn(node, w, sC): #current node, string built so far, the count of all possible suffixes
+        def __findWordsHelper(node, w, sC): #current node, string built so far, the count of all possible suffixes
             co = sC #passing off the suffix count to the interior scope
             for key in node.dict:
                 c = w #passing off the built word to the interior scope
@@ -70,8 +59,23 @@ class Trie:
                         return c # don't stop until all of the suffixes have been exhausted
                     else:
                         co -= 1
-                goIn(node.dict[key], c, co)
-        goIn(known, pre, suffixCount) # Note to self functions within class methods don't need 'self.'
+                __findWordsHelper(node.dict[key], c, co)
+
+        word = pre
+        words = []
+        current = self.root
+
+#move up to the correct point in the dictionary
+        for char in pre:
+            if char in current.dict:
+                current = current.dict[char]
+
+#the correct node in the trie based on the prefix
+        known = current
+        suffixCount = known.count
+
+# Note to self functions within class methods don't need 'self.'
+        __findWordsHelper(known, pre, suffixCount)
         return words
 
 if __name__ == "__main__":
