@@ -22,6 +22,7 @@ class Trie:
             self.depth = i # how many letters into the word, 0 = first letter
 
     def buildTrie(self, array):
+        """Takes in an array of strngs and builds a Trie of the strings' characters."""
         root = self.TrieNode()
         current = root
         for word in array:
@@ -51,21 +52,20 @@ class Trie:
         Uses a recursive helper function to traverse the Trie."""
 
         def __findWordsHelper(node, w, sC):
-            """Takes in the current node, the string built so far, and the count of all possible suffixes"""
+            """Takes in the current node, the string built so far, and the running count of all possible suffixes"""
 
             count = sC #passing off the suffix count to the interior scope
             for key in node.dict:
-                builtW = w #passing off the built word to the interior scope
-                builtW += node.dict[key].value
+                word = w #passing off the built word to the interior scope
+                word += node.dict[key].value
                 if node.dict[key].end == True:
-                    words.append(builtW)
+                    words.append(word)
                     if count < 0: # if the suffix you enter is a complete word (like 'ant')...
-                        return builtW # don't stop until all of the suffixes have been exhausted
+                        return #word # don't stop until all of the suffixes have been exhausted
                     else:
                         count -= 1
-                __findWordsHelper(node.dict[key], builtW, count)
+                __findWordsHelper(node.dict[key], word, count)
 
-        word = pre
         words = []
         current = self.root
 
