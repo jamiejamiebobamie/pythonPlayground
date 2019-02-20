@@ -11,8 +11,7 @@ class Trie:
     """A Trie specificially made to hold a dictionary of words."""
 
     def __init__(self):
-        self.array = self.dict() #Array of dictionary words
-        self.root = self.buildTrie(self.array)
+        self.root = self.buildTrie(self.dict())
 
     class TrieNode:
         def __init__(self, value=None, i=None):
