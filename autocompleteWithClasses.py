@@ -47,7 +47,7 @@ class Trie:
         return words
 
     def findWords(self, pre):
-        """Finds words that can be made wth prefix.
+        """Finds words that can be made with the prefix.
         Uses a recursive helper function to traverse the Trie."""
 
         def __findWordsHelper(node, w, sC):
