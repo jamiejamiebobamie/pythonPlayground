@@ -47,18 +47,23 @@ class Trie:
         return words
 
     def findWords(self, pre):
-        def __findWordsHelper(node, w, sC): #current node, string built so far, the count of all possible suffixes
-            co = sC #passing off the suffix count to the interior scope
+        """Finds words that can be made wth prefix.
+        Uses a recursive helper function to traverse the Trie."""
+
+        def __findWordsHelper(node, w, sC):
+            """Takes in the current node, the string built so far, and the count of all possible suffixes"""
+
+            count = sC #passing off the suffix count to the interior scope
             for key in node.dict:
-                c = w #passing off the built word to the interior scope
-                c += node.dict[key].value
+                builtW = w #passing off the built word to the interior scope
+                builtW += node.dict[key].value
                 if node.dict[key].end == True:
-                    words.append(c)
-                    if co < 0: # if the suffix you enter is a complete word (like 'ant')...
-                        return c # don't stop until all of the suffixes have been exhausted
+                    words.append(builtW)
+                    if count < 0: # if the suffix you enter is a complete word (like 'ant')...
+                        return builtW # don't stop until all of the suffixes have been exhausted
                     else:
-                        co -= 1
-                __findWordsHelper(node.dict[key], c, co)
+                        count -= 1
+                __findWordsHelper(node.dict[key], builtW, count)
 
         word = pre
         words = []
@@ -68,16 +73,18 @@ class Trie:
         for char in pre:
             if char in current.dict:
                 current = current.dict[char]
+            else:
+                return []
 
 #the correct node in the trie based on the prefix
         known = current
         suffixCount = known.count
 
-# Note to self functions within class methods don't need 'self.'
+# Note to self: functions within class methods don't need 'self.'
         __findWordsHelper(known, pre, suffixCount)
         return words
 
 if __name__ == "__main__":
     prefix = str(sys.argv[1]).lower() #Note: uppercase letters would otherwise affect output
     new = Trie()
-    print(new.findWords(prefix)) #type in prefix
+    print(new.findWords(prefix))
