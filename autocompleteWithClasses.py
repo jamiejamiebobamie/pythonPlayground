@@ -3,7 +3,10 @@
 
 TO-DO: Rewrite code in Javascript and then make a website
        that hosts the already built Trie in a database and pulls from it
-       dynamically, displaying the possibile words in a drop-down menu as the user types.'''
+       dynamically, displaying the possibile words in a drop-down menu as the user types.
+
+       Find out how much 'overhead', it costs to have these extra properties in the TrieNode.
+       (self.count and self.depth).'''
 
 import sys
 
@@ -18,11 +21,16 @@ class Trie:
             self.value = value
             self.dict = {}
             self.end = False
-            self.count = 0 # how many words contain this prefix
-            self.depth = i # how many letters into the word, 0 = first letter
+
+#How many words contain this prefix:
+            self.count = 0
+
+#How many letters into the word, 0 = first letter:
+            self.depth = i
 
     def buildTrie(self, array):
         """Takes in an array of strngs and builds a Trie of the strings' characters."""
+
         root = self.TrieNode()
         current = root
         for word in array:
@@ -37,11 +45,10 @@ class Trie:
         return root
 
     def dict(self):
-        """opens the dictionary-words file at the path and assigns the file to 'f'
-        reads 'f' and splits each word into an array element of the 'words' array
-        closes the file 'f'
-        and returns the array of dictionary words
-        """
+        """Opens the dictionary-words file at the path. Assigns the file to 'f'.
+        Reads 'f' and splits each word into a 'words' array element.
+        Closes 'f'. Returns the array of dictionary words."""
+
         f = open("/usr/share/dict/words", "r")
         words = f.read().split()
         f.close()
@@ -51,40 +58,33 @@ class Trie:
         """Finds words that can be made with the prefix.
         Uses a recursive helper function to traverse the Trie."""
 
-        def __findWordsHelper(node, w, sC):
-            """Takes in the current node, the string built so far, and the running count of all possible suffixes"""
+        def __findWordsHelper(node, w):
+            """Takes in the current node, the string built so far.
+            Iterates through the Trie,
+            appending all possible words to the 'words' array."""
 
-            count = sC #passing off the suffix count to the interior scope
             for key in node.dict:
-                word = w #passing off the built word to the interior scope
+                word = w #passing off the built word to the interior scope.
                 word += node.dict[key].value
                 if node.dict[key].end == True:
                     words.append(word)
-                    if count < 0: # if the suffix you enter is a complete word (like 'ant')...
-                        return #word # don't stop until all of the suffixes have been exhausted
-                    else:
-                        count -= 1
-                __findWordsHelper(node.dict[key], word, count)
+                __findWordsHelper(node.dict[key], word)
 
         words = []
         current = self.root
 
-#move up to the correct point in the dictionary
+#Move up to the correct point in the dictionary:
         for char in pre:
             if char in current.dict:
                 current = current.dict[char]
             else:
                 return []
 
-#the correct node in the trie based on the prefix
-        known = current
-        suffixCount = known.count
-
-# Note to self: functions within class methods don't need 'self.'
-        __findWordsHelper(known, pre, suffixCount)
+#Recursive function. Iterate through all nodes:
+        __findWordsHelper(current, pre)
         return words
 
 if __name__ == "__main__":
-    prefix = str(sys.argv[1]).lower() #Note: uppercase letters would otherwise affect output
+    prefix = str(sys.argv[1]).lower() #note: uppercase letters would otherwise affect output
     new = Trie()
     print(new.findWords(prefix))
