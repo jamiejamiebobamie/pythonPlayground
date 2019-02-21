@@ -1,6 +1,9 @@
 '''An autocomplete function. Call the function in the terminal and
     type a prefix to see all possibile words that can be made with that prefix.
 
+Input:  python3 autocompleteWithClasses.py lla
+Output: ['llama', 'llanberisslate', 'llandeilo', 'llandovery', 'llano', 'llautu']
+
 TO-DO: Rewrite code in Javascript and then make a website
        that hosts the already built Trie in a database and pulls from it
        dynamically, displaying the possibile words in a drop-down menu as the user types.
@@ -29,7 +32,7 @@ class Trie:
             self.depth = i
 
     def buildTrie(self, array):
-        """Takes in an array of strngs and builds a Trie of the strings' characters."""
+        """Takes in an array of strings and builds a Trie of the strings' characters."""
 
         root = self.TrieNode()
         current = root
@@ -54,12 +57,12 @@ class Trie:
         f.close()
         return words
 
-    def findWords(self, pre):
+    def findWords(self, prefix):
         """Finds words that can be made with the prefix.
         Uses a recursive helper function to traverse the Trie."""
 
         def __findWordsHelper(node, w):
-            """Takes in the current node, the string built so far.
+            """Takes in the current node and the string built so far.
             Iterates through the Trie,
             appending all possible words to the 'words' array."""
 
@@ -74,14 +77,14 @@ class Trie:
         current = self.root
 
 #Move up to the correct point in the dictionary:
-        for char in pre:
+        for char in prefix:
             if char in current.dict:
                 current = current.dict[char]
             else:
                 return []
 
 #Recursive function. Iterate through all nodes:
-        __findWordsHelper(current, pre)
+        __findWordsHelper(current, prefix)
         return words
 
 if __name__ == "__main__":
