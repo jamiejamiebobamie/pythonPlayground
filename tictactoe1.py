@@ -38,46 +38,62 @@
 # board is a length-3 array of strings, where each string board[i] has length 3.
 # Each board[i][j] is a character in the set {" ", "X", "O"}.
 
-board = ["O  ", "   ", "   "]
-board = ["XOX", " X ", "   "]
-board = ["XXX", "   ", "OOO"]
-board = ["XOX", "O O", "XOX"]
+# board = ["O  ", "   ", "   "]
+# board = ["XOX", " X ", "   "]
+# board = ["XXX", "   ", "OOO"]
+# board = ["XOX", "OXO", "XOX"]
+# board = ["X O", "X O", "X  "]
+board = ["XOX", "OOX", "OXX"]
+
+ # "XOX"
+ # "OOX"
+ # "OXX"
+
 
 def checkTTT(board):
-    dictX = {}
-    dictO = {}
+    dictRow = {}
+    dictCol = {}
     countX = 0
     countO = 0
-    for i, place in enumerate(board):
-        for j, plaze in enumerate(place):
-            if plaze == "X":
-                if i in dictX:
-                    dictX[i] += j
-                else:
-                    dictX[i] = j
-                if j in dictX:
-                    dictX[j] += i
-                else:
-                    dictX[j] = i
+    for i, row in enumerate(board):
+        for j, column in enumerate(row):
+            if column == "X":
                 countX += 1
-            if plaze == "O":
-                if i in dictO:
-                    dictO[i] += j
+                if i in dictRow:
+                    dictRow[i] += j
                 else:
-                    dictO[i] = j
-                if j in dictO:
-                    dictO[j] += i
+                    dictRow[i] = j
+                if j in dictCol:
+                    dictCol[j] += i
                 else:
-                    dictO[j] = i
+                    dictCol[j] = i
+            if column == "O":
                 countO += 1
-    return countX, countO, dictO.keys(), dictO.values()
-    # return countO <= countX and countO+2 >= countX
+                if i in dictRow:
+                    dictRow[i] -= j
+                else:
+                    dictRow[i] = j
+                if j in dictCol:
+                    dictCol[j] -= i
+                else:
+                    dictCol[j] = i
 
-    #if O > X False
-    #if X == O False
-    #if X > O+2 False
+    result = [0,0]
+    for key in dictRow:
+        print(key, dictRow[key])
+        result[0]+=abs(dictRow[key])
+    for key in dictCol:
+        print(key, dictCol[key])
+        result[1]+=abs(dictCol[key])
 
+    return countX, countO, result
+    return countO <= countX and countO+1 >= countX and result[0] <= 5 and result[1] <= 5
 
+    # if O > X False, False if O is greater than X
+    # if X > O+2 False, False if X has more than 1 more than O
 
+    # attempting to create a dictionary that holds values of rows and columns based on the index (i,j)
+    # this is based around the insight that the sum of all the indices of any winning row or column
+    # equals 3 (0 + 1 + 2 = 3). This...
 
 print(checkTTT(board))
