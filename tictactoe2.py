@@ -116,7 +116,6 @@ for key in keys:
 #play___
 
 
-# print(dict)
 
 # 0 2 4
 # 3 5 7
@@ -129,6 +128,58 @@ for key in keys:
 # _ X O
 # _ O X
 # O X _
+
+
+"""
+board   boardNode     keep track of adjacent repeats linkedlist?
+
+    must span 'n' to win
+
+    (i,j)
+
+    rows have repeat j's
+    columns have repeat i's
+
+     X X O X X O
+     X O X X O X
+     O X O O X O
+     X X O X X O
+     X O X X O X
+     O X O O X O
+
+     (0,5)(1,4)(2,3)(3,2)(4,1)(5,0)
+     diagonal indices are a pallindrome or 'stepwise' ascending
+
+
+     X X O
+     X O X
+     O X O
+
+     (0,2)(1,1)(2,0) = 6
+
+     O X X
+     X O X
+     O X O
+
+     (0,0)(1,1)(2,2) = 6
+
+          O X O X
+          X O X X
+          O X O O
+          X O O O
+
+     (0,0)(1,1)(2,2)(3,3) = 12
+     (0,3)(1,2)(2,1)(3,0) = 12
+
+            O X
+            X O
+
+    (0,0)(1,1)
+    (0,1)(1,0)
+
+
+
+"""
 
 #ended at 4 after 6 moves:
 
