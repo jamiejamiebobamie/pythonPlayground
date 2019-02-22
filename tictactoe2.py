@@ -54,14 +54,92 @@
 
 import random as rand
 
-def tictac(n):
-    array = list(" "*n)
-    turn = 0 #X = 1, O = 0
-    turns = 0
-    while turns < n:
-        array[turns], array[rand.randint(0,n-turns)] = turn^turn, array[rand.randint(0,n-turns)]
-        turn = 1
-        turns += 1
-    return array
+# def tictac(n):
+#     array = list('1'*n)
+#     turn = 0 #X = 1, O = 0
+#     turns = 0
+#     while turns < n:
+#         array[turns], array[rand.randint(0,n-turns)] = turn^turn, array[rand.randint(0,n-turns)]
+#         turn = 1
+#         turns += 1
+#     return array
+#
+# print(tictac(8))
 
-print(tictac(8))
+#learn numpy...
+
+
+#build____
+n= 3
+array = []
+for i in range(n):
+    array.append(list(" "*n))
+print(array)
+
+dict = {}
+
+for i, row in enumerate(array):
+    for j, column in enumerate(row):
+        print(i,j,3*i+j*2)
+        dict[3*i+j*2] = " "
+
+DL = list(dict.keys())
+print(DL)
+
+#build____
+
+
+#choose____
+value = True
+
+iter = 0
+for key in DL:
+    rando = rand.randint(iter,len(DL)-1)
+    # print(rando)
+    DL[rando], DL[iter] = DL[iter], DL[rando]
+    iter += 1
+print(DL)
+#choose____
+
+#play___
+for i, keys in enumerate(dict):
+    if value:
+        dict[DL[i]] = "X"
+    else:
+        dict[DL[i]] = "O"
+    value = not value
+    iter += 1
+#play___
+
+print(dict)
+
+
+# 0 2 4
+# 3 5 7
+# 6 8 10
+
+# X X O
+# X O X
+# O X O
+
+# _ X O
+# _ O X
+# O X _
+
+#ended at 4 after 6 moves:
+
+# [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]
+
+# (0, 0, 0)
+# (0, 1, 2)
+# (0, 2, 4)
+# (1, 0, 3)
+# (1, 1, 5) #hash function: 3*i+j*2
+# (1, 2, 7)
+# (2, 0, 6)
+# (2, 1, 8)
+# (2, 2, 10)
+
+# [0, 2, 3, 4, 5, 6, 7, 8, 10]
+# [7, 5, 2, 6, 8, 4, 0, 10, 3]
+# {0: 'X', 2: 'X', 3: 'X', 4: 'O', 5: 'O', 6: 'O', 7: 'X', 8: 'X', 10: 'O'}
