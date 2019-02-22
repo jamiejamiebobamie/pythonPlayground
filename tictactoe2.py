@@ -133,12 +133,7 @@ for key in keys:
 """
 board   boardNode     keep track of adjacent repeats linkedlist?
 
-    must span 'n' to win
 
-    (i,j)
-
-    rows have repeat j's
-    columns have repeat i's
 
      X X O X X O
      X O X X O X
@@ -176,6 +171,33 @@ board   boardNode     keep track of adjacent repeats linkedlist?
 
     (0,0)(1,1)
     (0,1)(1,0)
+
+
+must span 'n' to win.
+
+(i,j)
+rows have repeat j's
+    (a row's key would be j)
+columns have repeat i's
+    (a column's key would be i)
+
+no one cheats in this game so we don't need to keep track of if the move is valid
+    only if there's a winner or if all spaces have been filled.
+
+the key insight is that we don't need to worry about rows and columns the moment
+    they contain both an X and O, because it can't be a winner.
+
+make bins out of all rows and columns.
+    at each bin have a linked list of index, X/O,
+    and a boolean: 'hetero' (mixed)
+    True if it contains both X and O
+    Do not append to list if True.
+
+update move count each turn.
+
+diagonals??
+
+2 bins for diagonals
 
 
 
