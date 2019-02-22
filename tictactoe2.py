@@ -74,45 +74,49 @@ n= 3
 array = []
 for i in range(n):
     array.append(list(" "*n))
-print(array)
+# print(array)
 
-dict = {}
+unhash = {}
 
 for i, row in enumerate(array):
     for j, column in enumerate(row):
-        print(i,j,3*i+j*2)
-        dict[3*i+j*2] = " "
-
-DL = list(dict.keys())
-print(DL)
+        # print(i,j,3*i+j*2)
+        # dict[3*i+j*2] = " "
+        unhash[3*i+j*2] = [i, j, " "]
+# print(len(unhash))
 
 #build____
 
 
 #choose____
-value = True
+
 
 iter = 0
-for key in DL:
-    rando = rand.randint(iter,len(DL)-1)
+keys = list(unhash.keys())
+print(keys)
+for key in keys:
+    rando = rand.randint(iter,len(keys)-1)
     # print(rando)
-    DL[rando], DL[iter] = DL[iter], DL[rando]
+    keys[rando], keys[iter] = keys[iter], keys[rando]
     iter += 1
-print(DL)
+    print(keys)
+print(keys)
 #choose____
 
 #play___
-for i, keys in enumerate(dict):
+value = True
+for key in keys:
+    # print(unhash[key])
     if value:
-        dict[DL[i]] = "X"
+        unhash[key][2] = "X"
     else:
-        dict[DL[i]] = "O"
+        unhash[key][2] = "O"
     value = not value
-    iter += 1
+    # iter += 1
 #play___
 
-print(dict)
 
+# print(dict)
 
 # 0 2 4
 # 3 5 7
@@ -140,6 +144,34 @@ print(dict)
 # (2, 1, 8)
 # (2, 2, 10)
 
+
+
+# d[0] = (0, 0)
+# d[2] = (0, 1)
+# d[4] = (0, 2)
+# d[3] = (1, 0)
+# d[5] = (1, 1)
+# d[7] = (1, 2)
+# d[6] = (2, 0)
+# d[8] = (2, 1)
+# d[10] = (2, 2)
+
+# print(unhash)
+
 # [0, 2, 3, 4, 5, 6, 7, 8, 10]
 # [7, 5, 2, 6, 8, 4, 0, 10, 3]
 # {0: 'X', 2: 'X', 3: 'X', 4: 'O', 5: 'O', 6: 'O', 7: 'X', 8: 'X', 10: 'O'}
+
+
+# fisher-yates shuffle
+# [0, 2, 3, 4, 5, 6, 7, 8, 10]
+# [3, 2, 0, 4, 5, 6, 7, 8, 10]
+# [3, 0, 2, 4, 5, 6, 7, 8, 10]
+# [3, 0, 2, 4, 5, 6, 7, 8, 10]
+# [3, 0, 2, 4, 5, 6, 7, 8, 10]
+# [3, 0, 2, 4, 8, 6, 7, 5, 10]
+# [3, 0, 2, 4, 8, 6, 7, 5, 10]
+# [3, 0, 2, 4, 8, 6, 5, 7, 10]
+# [3, 0, 2, 4, 8, 6, 5, 10, 7]
+# [3, 0, 2, 4, 8, 6, 5, 10, 7]
+# [3, 0, 2, 4, 8, 6, 5, 10, 7]
