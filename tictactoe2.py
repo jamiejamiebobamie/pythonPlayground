@@ -116,7 +116,6 @@ for key in keys:
 #play___
 
 
-
 # 0 2 4
 # 3 5 7
 # 6 8 10
@@ -129,79 +128,6 @@ for key in keys:
 # _ O X
 # O X _
 
-
-"""
-board   boardNode     keep track of adjacent repeats linkedlist?
-
-
-
-     X X O X X O
-     X O X X O X
-     O X O O X O
-     X X O X X O
-     X O X X O X
-     O X O O X O
-
-     (0,5)(1,4)(2,3)(3,2)(4,1)(5,0)
-     diagonal indices are a pallindrome or 'stepwise' ascending
-
-
-     X X O
-     X O X
-     O X O
-
-     (0,2)(1,1)(2,0) = 6
-
-     O X X
-     X O X
-     O X O
-
-     (0,0)(1,1)(2,2) = 6
-
-          O X O X
-          X O X X
-          O X O O
-          X O O O
-
-     (0,0)(1,1)(2,2)(3,3) = 12
-     (0,3)(1,2)(2,1)(3,0) = 12
-
-            O X
-            X O
-
-    (0,0)(1,1)
-    (0,1)(1,0)
-
-
-must span 'n' to win.
-
-(i,j)
-rows have repeat j's
-    (a row's key would be j)
-columns have repeat i's
-    (a column's key would be i)
-
-no one cheats in this game so we don't need to keep track of if the move is valid
-    only if there's a winner or if all spaces have been filled.
-
-the key insight is that we don't need to worry about rows and columns the moment
-    they contain both an X and O, because it can't be a winner.
-
-make bins out of all rows and columns.
-    at each bin have a linked list of index, X/O,
-    and a boolean: 'hetero' (mixed)
-    True if it contains both X and O
-    Do not append to list if True.
-
-update move count each turn.
-
-diagonals??
-
-2 bins for diagonals
-
-
-
-"""
 
 #ended at 4 after 6 moves:
 
@@ -248,3 +174,144 @@ diagonals??
 # [3, 0, 2, 4, 8, 6, 5, 10, 7]
 # [3, 0, 2, 4, 8, 6, 5, 10, 7]
 # [3, 0, 2, 4, 8, 6, 5, 10, 7]
+
+"""
+must span 'n' to win.
+
+(i,j)
+rows have repeat j's
+    (a row's key would be j)
+columns have repeat i's
+    (a column's key would be i)
+
+no one cheats in this game so we don't need to keep track of if the move is valid
+    only if there's a winner or if all spaces have been filled.
+
+the key insight is that we don't need to worry about rows and columns the moment
+    they contain both an X and O, because it can't be a winner.
+
+make bins out of all rows and columns.
+    at each bin have a linked list of nodes with the properties:
+        value: index of space in multidimensional array,
+        player: X/O,
+        next: next node in linked list,
+
+    #ALL NODES HAVE THESE PROPERTIES, BUT THEY'RE
+    ONLY CHANGED ON THE FIRST NODE OF THE LIST:
+        homogenous: True #True if this list contains only X or O elements,
+        count: # of nodes in list
+
+    Do not append to list if 'homogenous' is False.
+
+
+diagonals??
+
+     X X O X X O
+     X O X X O X
+     O X O O X O
+     X X O X X O
+     X O X X O X
+     O X O O X O
+
+     (0,5)(1,4)(2,3)(3,2)(4,1)(5,0)
+
+     X X O
+     X O X
+     O X O
+
+     (0,2)(1,1)(2,0) = 6
+
+     O X X
+     X O X
+     O X O
+
+     (0,0)(1,1)(2,2) = 6
+
+          O X O X
+          X O X X
+          O X O O
+          X O O O
+
+     (0,0)(1,1)(2,2)(3,3) = 12
+     (0,3)(1,2)(2,1)(3,0) = 12
+
+            O X
+            X O
+
+    (0,0)(1,1)
+    (0,1)(1,0)
+
+     diagonal indices are a pallindrome or 'stepwise' ascending
+
+     diagDict keys: 'pal' and 'step'
+
+
+'   value = 0
+    player = {0: O, 1: X}
+    spacesCount = 0
+    dictRow, dictCol, dictDiag = {}, {}, {}
+
+    while spacesCount < n**2:
+
+        value = not value #X starts
+
+
+
+        if key in dictRow:
+            if dictRow[key].homogenous:
+                    dictRow[key].addNode(i,j,player[value])
+                    dictRow[key].count += 1
+                if dictRow[key].count == n:
+                    return dictRow[key].player
+                if player[value] != dictRow[key].peek(): #peek(), in at the first node and return it's player attribute
+                    dictRow[key].homogenous = False
+        else:
+            dictRow[key].addNode(i,j,player[value])
+            dictRow[key].count += 1
+
+        if key in dictRow:
+            if dictCol[key].homogenous:
+                    dictCol[key].addNode(i,j,player[value])
+                    dictCol[key].count += 1
+                if dictCol[key].count == n:
+                    return dictCol[key].player
+                if player[value] != dictCol[key].peek(): #peek(), in at the first node and return it's player attribute
+                    dictCol[key].homogenous = False
+        else:
+            dictCol[key].addNode(i,j,player[value])
+            dictCol[key].count += 1
+
+        #look at the indices and add them to the appropriate diagonal bin:
+        if i == j:
+            if len(dictDiag) != 0:
+                if dictDiag['step'].homogenous:
+                    dictDiag['step'].addNode(i,j,player[value])
+                    dictDiag[key].count += 1
+                    if dictDiag['step'].count == n:
+                        return dictDiag['step'].player
+                    if player[value] != dictDiag['step'].peek():
+                        dictDiag['step'].homogenous = False
+                else:
+                    dictDiag['step'].addNode(i,j,player[value])
+                    dictDiag[key].count += 1
+
+        if i + j == n-1:
+            if len(dictDiag) != 0:
+                if dictDiag['pal'].homogenous:
+                    dictDiag['pal'].addNode(i,j,player[value])
+                    dictDiag[key].count += 1
+                    if dictDiag['pal'].count == n:
+                        return dictDiag['pal'].player
+                    if player[value] != dictDiag['pal'].peek():
+                        dictDiag['pal'].homogenous = False
+                else:
+                    dictDiag['pal'].addNode(i,j,player[value])
+                    dictDiag[key].count += 1
+
+        spaceCount += 1 #update move count each turn.
+
+    else:
+        return "Tie"
+'
+
+"""
