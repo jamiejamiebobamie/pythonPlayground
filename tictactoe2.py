@@ -344,11 +344,10 @@ class TicTacToe:
 
         class LinkedList:
             def __init__(self):
-                self.head = self.tail = None # the chonological tiles played. is this necessary?
-                                             # TicTacToe.order = the chonological order of the tiles played.
+                self.heads = {}
 
                 class LL_Node:
-                    def __init__(self, value=None, player=None):
+                    def __init__(self, value_i=None, value_j=None, player=None):
                         """new idea: the first tile in either a row or column or diagonal
                         becomes the head of the list you add to the node by setting
                         the row, column, or diag attributes to the next node in the row,
@@ -363,19 +362,33 @@ class TicTacToe:
                         self.column = None # how do I keep track of their respective heads?
                         self.diag = None #
 
-                        self.value = value # (i,j)
+                        self.value = (value_i, value_j) # (i,j)
                         self.player = player # X or O
 
                         self.next = None # the chonological order of the tiles played / chosen
                         self.homogenous = True
                         self.count = 0 # n-1 to end game
 
-                # def addNode(i,j,player,): # must account for a node not being present.
+                def addNode(value_i, value_j, player): # must account for a node not being present.
+                    if value_i in self.heads:
+                        self.board[value_i, value_j].column
+                    else:
+                        self.board[value_i, value_j] = LL_Node(value_i, value_j, player)
+                        self.heads[self.board[value_i, value_j]]
+                    if value_j in self.heads:
+                        pass
 
 
-new = TicTacToe(4)
-for order in new.order:
-    print(order, new.board[order])
+
+new = TicTacToe(30)
+values = []
+for i, order in enumerate(new.order):
+    if (33*order[0]+order[1]*2) in values: # testing 'hash' function
+        print('Stop!')
+        break
+    else:
+        values.append(33*order[0]+order[1]*2)
+    print(i, order, values)
 
 #
 # #choose____
