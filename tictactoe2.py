@@ -361,7 +361,7 @@ class TicTacToe:
 
                         self.row = None # does this become a graph if you have multiple pointers / next nodes?
                         self.column = None # how do I keep track of their respective heads?
-                        self.diag = None # 
+                        self.diag = None #
 
                         self.value = value # (i,j)
                         self.player = player # X or O
@@ -373,9 +373,9 @@ class TicTacToe:
                 # def addNode(i,j,player,): # must account for a node not being present.
 
 
-# new = TicTacToe(13)
-# for order in new.order:
-#     print(order, new.board[order])
+new = TicTacToe(4)
+for order in new.order:
+    print(order, new.board[order])
 
 #
 # #choose____
