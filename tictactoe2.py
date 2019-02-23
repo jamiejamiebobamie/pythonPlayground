@@ -68,50 +68,50 @@ import random as rand
 
 #learn numpy...
 
-
-#build____
-n= 3
-array = []
-for i in range(n):
-    array.append(list(" "*n))
-# print(array)
-
-unhash = {}
-
-for i, row in enumerate(array):
-    for j, column in enumerate(row):
-        # print(i,j,3*i+j*2)
-        # dict[3*i+j*2] = " "
-        unhash[3*i+j*2] = [i, j, " "]
-# print(len(unhash))
-
-#build____
-
-
-#choose____
-
-
-iter = 0
-keys = list(unhash.keys())
-print(keys)
-for key in keys:
-    rando = rand.randint(iter,len(keys)-1)
-    # print(rando)
-    keys[rando], keys[iter] = keys[iter], keys[rando]
-    iter += 1
-    print(keys)
-print(keys)
-#choose____
-
-#play___
-value = True
-for key in keys:
-    # print(unhash[key])
-    if value:
-        unhash[key][2] = "X"
-    else:
-        unhash[key][2] = "O"
-    value = not value
+#
+# #build____
+# n= 3
+# array = []
+# for i in range(n):
+#     array.append(list(" "*n))
+# # print(array)
+#
+# unhash = {}
+#
+# for i, row in enumerate(array):
+#     for j, column in enumerate(row):
+#         # print(i,j,3*i+j*2)
+#         # dict[3*i+j*2] = " "
+#         unhash[3*i+j*2] = [i, j, " "]
+# # print(len(unhash))
+#
+# #build____
+#
+#
+# #choose____
+#
+#
+# iter = 0
+# keys = list(unhash.keys())
+# print(keys)
+# for key in keys:
+#     rando = rand.randint(iter,len(keys)-1)
+#     # print(rando)
+#     keys[rando], keys[iter] = keys[iter], keys[rando]
+#     iter += 1
+#     print(keys)
+# print(keys)
+# #choose____
+#
+# #play___
+# value = True
+# for key in keys:
+#     # print(unhash[key])
+#     if value:
+#         unhash[key][2] = "X"
+#     else:
+#         unhash[key][2] = "O"
+#     value = not value
     # iter += 1
 #play___
 
@@ -246,7 +246,7 @@ diagonals??
      diagDict keys: 'pal' and 'step'
 
 
-'   value = 0
+'   value = 0 #O
     player = {0: O, 1: X}
     spacesCount = 0
     dictRow, dictCol, dictDiag = {}, {}, {}
@@ -254,8 +254,6 @@ diagonals??
     while spacesCount < n**2:
 
         value = not value #X starts
-
-
 
         if key in dictRow:
             if dictRow[key].homogenous:
@@ -315,3 +313,160 @@ diagonals??
 '
 
 """
+class TicTacToe:
+    def __init__(self, n=None):
+        self.board = self.buildBoard(n)
+        self.order = self.randomOrder(self.board)
+        self.play = True
+        self.count = 0 # keep track of the overall tiles or unneccessary?
+
+    def buildBoard(self, n):
+        """Returns a dictionary of (i,j) index keys with 'None' values."""
+        boardDict = {}
+        for i in range(n):
+            for j in range(n):
+                boardDict[i,j] = None
+        return boardDict
+
+    def randomOrder(self, dictionary):
+        """takes a dictionary of index-keys and mixes their order up
+        returning and array of index-keys"""
+        iter = 0
+        order = list(dictionary.keys())# these methods probably add to the time complexity...
+        for key in order:
+            rando = rand.randint(iter,len(order)-1)
+            order[rando], order[iter] = order[iter], order[rando]
+            iter += 1
+        return order
+
+        def play(self):
+            pass
+
+        class LinkedList:
+            def __init__(self):
+                self.head = self.tail = None # the chonological tiles played. is this necessary?
+                                             # TicTacToe.order = the chonological order of the tiles played.
+
+                class LL_Node:
+                    def __init__(self, value=None, player=None):
+                        """new idea: the first tile in either a row or column or diagonal
+                        becomes the head of the list you add to the node by setting
+                        the row, column, or diag attributes to the next node in the row,
+                        column, or diagonal, keeping the count (of each...)
+                        before you add a node you check a node's type(?)
+                        and if it conflicts with the current type of the node you set the
+                        row, column, or diagonal to "Nope" to say 'don't add more nodes...'
+                        The tile becomes a 'blocker' for that row, column, or diagonal.
+                        """
+
+                        self.row = None # does this become a graph if you have multiple pointers / next nodes?
+                        self.column = None # how do I keep track of their respective heads?
+                        self.diag = None # 
+
+                        self.value = value # (i,j)
+                        self.player = player # X or O
+
+                        self.next = None # the chonological order of the tiles played / chosen
+                        self.homogenous = True
+                        self.count = 0 # n-1 to end game
+
+                # def addNode(i,j,player,): # must account for a node not being present.
+
+
+# new = TicTacToe(13)
+# for order in new.order:
+#     print(order, new.board[order])
+
+#
+# #choose____
+# def makeTurnPositionsArray(board)
+#
+# iter = 0
+# keys = list(unhash.keys())
+# print(keys)
+# for key in keys:
+#     rando = rand.randint(iter,len(keys)-1)
+#     # print(rando)
+#     keys[rando], keys[iter] = keys[iter], keys[rando]
+#     iter += 1
+#     print(keys)
+# print(keys)
+# #choose____
+#
+# #play___
+# value = True
+# for key in keys:
+#     # print(unhash[key])
+#     if value:
+#         unhash[key][2] = "X"
+#     else:
+#         unhash[key][2] = "O"
+#     value = not value
+#
+#
+# value = 0 #O
+# player = {0: O, 1: X}
+# spacesCount = 0
+# dictRow, dictCol, dictDiag = {}, {}, {}
+#
+#     while spacesCount < n**2:
+#
+#         value = not value #X starts
+#
+#         key =
+#
+#         if key in dictRow:
+#             if dictRow[key].homogenous:
+#                     dictRow[key].addNode(i,j,player[value])
+#                     dictRow[key].count += 1
+#                 if dictRow[key].count == n:
+#                     return dictRow[key].player
+#                 if player[value] != dictRow[key].peek(): #peek(), in at the first node and return it's player attribute
+#                     dictRow[key].homogenous = False
+#         else:
+#             dictRow[key].addNode(i,j,player[value])
+#             dictRow[key].count += 1
+#
+#         if key in dictRow:
+#             if dictCol[key].homogenous:
+#                     dictCol[key].addNode(i,j,player[value])
+#                     dictCol[key].count += 1
+#                 if dictCol[key].count == n:
+#                     return dictCol[key].player
+#                 if player[value] != dictCol[key].peek(): #peek(), in at the first node and return it's player attribute
+#                     dictCol[key].homogenous = False
+#         else:
+#             dictCol[key].addNode(i,j,player[value])
+#             dictCol[key].count += 1
+#
+#         #look at the indices and add them to the appropriate diagonal bin:
+#         if i == j:
+#             if len(dictDiag) != 0:
+#                 if dictDiag['step'].homogenous:
+#                     dictDiag['step'].addNode(i,j,player[value])
+#                     dictDiag[key].count += 1
+#                     if dictDiag['step'].count == n:
+#                         return dictDiag['step'].player
+#                     if player[value] != dictDiag['step'].peek():
+#                         dictDiag['step'].homogenous = False
+#                 else:
+#                     dictDiag['step'].addNode(i,j,player[value])
+#                     dictDiag[key].count += 1
+#
+#         if i + j == n-1:
+#             if len(dictDiag) != 0:
+#                 if dictDiag['pal'].homogenous:
+#                     dictDiag['pal'].addNode(i,j,player[value])
+#                     dictDiag[key].count += 1
+#                     if dictDiag['pal'].count == n:
+#                         return dictDiag['pal'].player
+#                     if player[value] != dictDiag['pal'].peek():
+#                         dictDiag['pal'].homogenous = False
+#                 else:
+#                     dictDiag['pal'].addNode(i,j,player[value])
+#                     dictDiag[key].count += 1
+#
+#         spaceCount += 1 #update move count each turn.
+#
+#     else:
+#         return "Tie"
