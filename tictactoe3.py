@@ -195,7 +195,7 @@ class TicTacToe:
                     self.rows[i][0] = False
 
 # On boards of odd-sized 'n' (n = 3,5,7,etc...)
-# the the middle square is part of both diagonals: 'step' and 'same':
+# the middle square is part of both diagonals: 'step' and 'same':
             if i == j:
                 if self.diags['same'][0]:
                     if self.diags['same'][1] == "" or player[value] == self.diags['same'][1]:
