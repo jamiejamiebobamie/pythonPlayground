@@ -53,56 +53,20 @@
 # You need two arrays: int rows[n], int cols[n], plus two variables: diagonal, anti_diagonal.
 
 """
-must span 'n' to win.
+no one cheats in this game so we don't need to keep track of if the move is valid
+    only if there's a winner or if all squares have been filled.
 
-(i,j)
+the key insight is that we don't need to worry about a row, column, or diagonal the moment
+    it contains both an X and O, because it can't be a winner. (must span 'n' to win.)
+
+make bins out of all rows, columns, and  diagonals. ("bin" = dictionary)
+
+each square has an i,j index.
+
 rows have repeat j's
     (a row's key would be j)
 columns have repeat i's
     (a column's key would be i)
-
-no one cheats in this game so we don't need to keep track of if the move is valid
-    only if there's a winner or if all spaces have been filled.
-
-the key insight is that we don't need to worry about rows and columns the moment
-    they contain both an X and O, because it can't be a winner.
-
-make bins out of all rows and columns.
-    at each bin have a linked list of nodes with the properties:
-        value: index of space in multidimensional array,
-        player: X/O,
-        next: next node in linked list,
-
-    #ALL NODES HAVE THESE PROPERTIES, BUT THEY'RE
-    ONLY CHANGED ON THE FIRST NODE OF THE LIST:
-        homogenous: True #True if this list contains only X or O elements,
-        count: # of nodes in list
-
-    Do not append to list if 'homogenous' is False.
-
-
-diagonals??
-
-     X X O X X O
-     X O X X O X
-     O X O O X O
-     X X O X X O
-     X O X X O X
-     O X O O X O
-
-     (0,5)(1,4)(2,3)(3,2)(4,1)(5,0)
-
-     X X O
-     X O X
-     O X O
-
-     (0,2)(1,1)(2,0) = 6
-
-     O X X
-     X O X
-     O X O
-
-     (0,0)(1,1)(2,2) = 6
 
           O X O X
           X O X X
@@ -118,76 +82,10 @@ diagonals??
     (0,0)(1,1)
     (0,1)(1,0)
 
-     diagonal indices are a pallindrome or 'stepwise' ascending
-
-     diagDict keys: 'pal' and 'step'
-
-
-'   value = 0 #O
-    player = {0: O, 1: X}
-    spacesCount = 0
-    dictRow, dictCol, dictDiag = {}, {}, {}
-
-    while spacesCount < n**2:
-
-        value = not value #X starts
-
-        if key in dictRow:
-            if dictRow[key].homogenous:
-                    dictRow[key].addNode(i,j,player[value])
-                    dictRow[key].count += 1
-                if dictRow[key].count == n:
-                    return dictRow[key].player
-                if player[value] != dictRow[key].peek(): #peek(), in at the first node and return it's player attribute
-                    dictRow[key].homogenous = False
-        else:
-            dictRow[key].addNode(i,j,player[value])
-            dictRow[key].count += 1
-
-        if key in dictRow:
-            if dictCol[key].homogenous:
-                    dictCol[key].addNode(i,j,player[value])
-                    dictCol[key].count += 1
-                if dictCol[key].count == n:
-                    return dictCol[key].player
-                if player[value] != dictCol[key].peek(): #peek(), in at the first node and return it's player attribute
-                    dictCol[key].homogenous = False
-        else:
-            dictCol[key].addNode(i,j,player[value])
-            dictCol[key].count += 1
-
-        #look at the indices and add them to the appropriate diagonal bin:
-        if i == j:
-            if len(dictDiag) != 0:
-                if dictDiag['step'].homogenous:
-                    dictDiag['step'].addNode(i,j,player[value])
-                    dictDiag[key].count += 1
-                    if dictDiag['step'].count == n:
-                        return dictDiag['step'].player
-                    if player[value] != dictDiag['step'].peek():
-                        dictDiag['step'].homogenous = False
-                else:
-                    dictDiag['step'].addNode(i,j,player[value])
-                    dictDiag[key].count += 1
-
-        if i + j == n-1:
-            if len(dictDiag) != 0:
-                if dictDiag['pal'].homogenous:
-                    dictDiag['pal'].addNode(i,j,player[value])
-                    dictDiag[key].count += 1
-                    if dictDiag['pal'].count == n:
-                        return dictDiag['pal'].player
-                    if player[value] != dictDiag['pal'].peek():
-                        dictDiag['pal'].homogenous = False
-                else:
-                    dictDiag['pal'].addNode(i,j,player[value])
-                    dictDiag[key].count += 1
-
-        spaceCount += 1 #update move count each turn.
-
-    else:
-        return "Tie"
-'
+     the indices of a diagonal either
+     that add up to equal n-1 (i + j == n - 1)
+     or they equal each other (i == j )
+     depending on whether it's going from left to right or right to left
 
 """
 import random as rand
@@ -195,29 +93,36 @@ import random as rand
 class TicTacToe:
     def __init__(self, n=3):
         self.n = n
+        self.go = "Tie" # The object that is returned when the game is over.
 
+        #the bins
         self.rows = {}
         self.cols = {}
         self.diags = {}
 
-        self.board = self.buildBoard(n) # an array of i-j board indices
+        # an array of i-j board indices
+        self.board = self.buildBoard(n)
+
+        # an array of randomized i-j board indices
         self.order = self.randomOrder(self.board)
 
     def buildBoard(self, n):
         """Returns an array of (i,j) index keys to be randomized.
-        Builds rows, cols, and diags dictionaries."""
+        Adds keys to the rows, cols, and diags dictionaries."""
+
         boardDict = []
         diagCount = 0
 
         for i in range(n):
-            self.rows[i] = None
-            self.cols[i] = None
+            self.rows[i] = [True, "", 0] #homogenous, X/O, count of X's/O's
+            self.cols[i] = [True, "", 0]
             for j in range(n):
                 if (i == j) or (i + j == n-1):
-                    if diagCount < 2: #only need one of each
-                        self.diags[i,j] = None
+                    if diagCount < 2: #only need one of each...
+                        # I could hard code these indices...
+                        self.diags[i,j] = [True, "", 0]
                         diagCount += 1
-                boardDict.append((i,j))
+                boardDict.append((i,j)) # Is there a faster way to make this array than nested for loops?
         return boardDict
 
     def randomOrder(self, array):
@@ -234,25 +139,85 @@ class TicTacToe:
         return order
 
     def play(self):
-        value = 0 #O
+        """Plugs the self.order values into the respective dictionaries.
+        Game ends when the count of one of the dictionaries == the board size
+        or if all squares have been filled."""
+
+        value = 0 #player dictionary key
         player = {0: 'O', 1: 'X'}
-        moveCount = 0
-        iter = 0
+
+        moveCount = 0 #how many moves have occurred. also doubles as the self.order index.
         turn = ""
-        while moveCount < self.n**2:
-            value = not value #X starts
-            turn = player[value]
-            key = self.order[iter]
+        while moveCount < self.n**2 and self.go == "Tie":
+            value = not value
+            turn = player[value] #X starts
+            key = self.order[moveCount]
+            i = key[0]
+            j = key[1]
 
-            # keep track of count and homogenity
-            # at each i/j index key in the given row/column/diagonal dictionary.
-            # doesn't need to be a node. can be a tuple or array.
 
-            iter +=1
+
+# self.rows[j][0] == homogenous?
+# self.rows[j][1] == X/O?
+# self.rows[j][2] == count of X's/O's?
+
+# Check to see if row j is 'homogenous' (contains only X's or O's):
+            if self.rows[j][0]:
+
+# Check to see if any square in row j has been played. If it has been played,
+# check to see if it was the same person who's current turn it is.
+                if self.rows[j][1] == "" or player[value] == self.rows[j][1]:
+
+# Mark the column with the current person's token (X or O).
+# Admittedly, this could be improved to not update every time.
+                    self.rows[j][1] = turn
+
+# Update the count by one.
+                    self.rows[j][2] += 1
+
+# If the count is equal to the board size, end the game and return who won and how.
+                    if self.rows[j][2] == self.n:
+                        self.go = (turn, 'row ' + str(j))
+
+# If the current person who's turn it is,
+# is not the same as the previous player who played this row,
+# set this row's 'homogenous' attribute to false.
+                else:
+                    self.rows[j][0] = False
+
+            if self.cols[i][0]:
+                if self.cols[i][1] == "" or player[value] == self.cols[i][1]:
+                    self.cols[i][1] = turn
+                    self.cols[i][2] += 1
+                    if self.cols[i][2] == self.n:
+                        self.go = (turn, 'column ' + str(i))
+                else:
+                    self.rows[i][0] = False
+
+            if key[0] == key[1]:
+                if self.diags[0,0][0]:
+                    if self.diags[0,0][1] == "" or player[value] == self.diags[0,0][1]:
+                        self.diags[0,0][1] = turn
+                        self.diags[0,0][2] += 1
+                    if self.diags[0,0][2] == self.n:
+                        self.go = (turn, 'diagonal from left to right')
+                    else:
+                        self.diags[0,0][0] = False
+
+            elif key[0] + key[1] == self.n-1:
+                if self.diags[0,self.n-1][0]:
+                    if self.diags[0,self.n-1][1] == "" or player[value] == self.diags[0,self.n-1][1]:
+                        self.diags[0,self.n-1][1] = turn
+                        self.diags[0,self.n-1][2] += 1
+                    if self.diags[0,self.n-1][2] == self.n:
+                        self.go = (turn, 'diagonal from right to left')
+                    else:
+                        self.diags[0,self.n-1][0] = False
+
             moveCount += 1
-            print(turn, key)
+            print(turn, key, self.diags[0,0][2], self.diags[0,self.n-1][2])
         else:
-            return "Tie"
+            return self.go
 
-new = TicTacToe(5)
+new = TicTacToe(2)
 print(new.play())
