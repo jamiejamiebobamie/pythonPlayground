@@ -73,8 +73,8 @@ columns have repeat i's
           O X O O
           X O O O
 
-     (0,0)(1,1)(2,2)(3,3) = 12
-     (0,3)(1,2)(2,1)(3,0) = 12
+     (0,0)(1,1)(2,2)(3,3)
+     (0,3)(1,2)(2,1)(3,0)
 
             O X
             X O
@@ -83,9 +83,12 @@ columns have repeat i's
     (0,1)(1,0)
 
      the indices of a diagonal either
-     that add up to equal n-1 (i + j == n - 1)
-     or they equal each other (i == j )
-     depending on whether it's going from left to right or right to left
+     add up to equal n-1 (i + j == n - 1)
+     or they equal each other (i == j)
+     depending on whether it's going from
+     left to right (i == j)
+     or
+     right to left (i + j == n - 1)
 
 """
 import random as rand
