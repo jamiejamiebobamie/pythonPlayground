@@ -63,10 +63,10 @@ make bins out of all rows, columns, and  diagonals. ("bin" = dictionary)
 
 each square has an i,j index.
 
-rows have repeat j's
-    (a row's key would be j)
-columns have repeat i's
-    (a column's key would be i)
+rows have repeat i's
+    (a row's key would be i)
+columns have repeat j's
+    (a column's key would be j)
 
           O X O X
           X O X X
@@ -91,6 +91,7 @@ columns have repeat i's
      right to left (i + j == n - 1)
 
 """
+import sys
 import random as rand
 
 class TicTacToe:
@@ -101,7 +102,7 @@ class TicTacToe:
         #the bins
         self.rows = {}
         self.cols = {}
-        self.diags = {}
+        self.diags = {'step': [True, "", 0], 'same': [True, "", 0]}
 
         # an array of i-j board indices
         self.board = self.buildBoard(n)
@@ -120,12 +121,9 @@ class TicTacToe:
             self.rows[i] = [True, "", 0] #homogenous, X/O, count of X's/O's
             self.cols[i] = [True, "", 0]
             for j in range(n):
-                if (i == j) or (i + j == n-1):
-                    if diagCount < 2: #only need one of each...
-                        # I could hard code these indices...
-                        self.diags[i,j] = [True, "", 0]
-                        diagCount += 1
-                boardDict.append((i,j)) # Is there a faster way to make this array than nested for loops?
+
+# Is there a faster way to make this array than nested for loops?
+                boardDict.append((i,j))
         return boardDict
 
     def randomOrder(self, array):
@@ -159,68 +157,96 @@ class TicTacToe:
             j = key[1]
 
 
-
 # self.rows[j][0] == homogenous?
 # self.rows[j][1] == X/O?
 # self.rows[j][2] == count of X's/O's?
 
 # Check to see if row j is 'homogenous' (contains only X's or O's):
-            if self.rows[j][0]:
+            if self.rows[i][0]:
 
 # Check to see if any square in row j has been played. If it has been played,
 # check to see if it was the same person who's current turn it is.
-                if self.rows[j][1] == "" or player[value] == self.rows[j][1]:
+                if self.rows[i][1] == "" or player[value] == self.rows[i][1]:
 
 # Mark the column with the current person's token (X or O).
 # Admittedly, this could be improved to not update every time.
-                    self.rows[j][1] = turn
+                    self.rows[i][1] = turn
 
 # Update the count by one.
-                    self.rows[j][2] += 1
+                    self.rows[i][2] += 1
 
 # If the count is equal to the board size, end the game and return who won and how.
-                    if self.rows[j][2] == self.n:
-                        self.go = (turn, 'row ' + str(j))
+                    if self.rows[i][2] == self.n:
+                        self.go = (turn, 'row ' + str(i))
 
 # If the current person who's turn it is,
 # is not the same as the previous player who played this row,
 # set this row's 'homogenous' attribute to false.
                 else:
-                    self.rows[j][0] = False
+                    self.rows[i][0] = False
 
-            if self.cols[i][0]:
-                if self.cols[i][1] == "" or player[value] == self.cols[i][1]:
-                    self.cols[i][1] = turn
-                    self.cols[i][2] += 1
-                    if self.cols[i][2] == self.n:
-                        self.go = (turn, 'column ' + str(i))
+            if self.cols[j][0]:
+                if self.cols[j][1] == "" or player[value] == self.cols[j][1]:
+                    self.cols[j][1] = turn
+                    self.cols[j][2] += 1
+                    if self.cols[j][2] == self.n:
+                        self.go = (turn, 'column ' + str(j))
                 else:
                     self.rows[i][0] = False
 
-            if key[0] == key[1]:
-                if self.diags[0,0][0]:
-                    if self.diags[0,0][1] == "" or player[value] == self.diags[0,0][1]:
-                        self.diags[0,0][1] = turn
-                        self.diags[0,0][2] += 1
-                    if self.diags[0,0][2] == self.n:
-                        self.go = (turn, 'diagonal from left to right')
+# On boards of odd-sized 'n' (n = 3,5,7,etc...)
+# the the middle square is part of both diagonals: 'step' and 'same':
+            if i == j:
+                if self.diags['same'][0]:
+                    if self.diags['same'][1] == "" or player[value] == self.diags['same'][1]:
+                        self.diags['same'][1] = turn
+                        self.diags['same'][2] += 1
+                        if self.diags['same'][2] == self.n:
+                            self.go = (turn, 'diagonal from left to right')
                     else:
-                        self.diags[0,0][0] = False
+                        self.diags['same'][0] = False
 
-            elif key[0] + key[1] == self.n-1:
-                if self.diags[0,self.n-1][0]:
-                    if self.diags[0,self.n-1][1] == "" or player[value] == self.diags[0,self.n-1][1]:
-                        self.diags[0,self.n-1][1] = turn
-                        self.diags[0,self.n-1][2] += 1
-                    if self.diags[0,self.n-1][2] == self.n:
-                        self.go = (turn, 'diagonal from right to left')
+            if i + j + 1 == self.n:
+                if self.diags['step'][0]:
+                    if self.diags['step'][1] == "" or player[value] == self.diags['step'][1]:
+                        self.diags['step'][1] = turn
+                        self.diags['step'][2] += 1
+                        if self.diags['step'][2] == self.n:
+                            self.go = (turn, 'diagonal from right to left')
                     else:
-                        self.diags[0,self.n-1][0] = False
+                        self.diags['step'][0] = False
 
             moveCount += 1
-            print(turn, key, self.diags[0,0][2], self.diags[0,self.n-1][2])
+            print(turn, key)
         else:
             return self.go
 
-new = TicTacToe(2)
-print(new.play())
+if __name__ == "__main__":
+    n = int(sys.argv[1])
+    new = TicTacToe(n)
+    print(new.play())
+
+
+# INPUT: python3 tictactoe3.py
+
+# OUTPUT:
+# ('X', (0, 0))
+# ('O', (1, 0))
+# ('X', (1, 1))
+# ('O', (3, 2))
+# ('X', (0, 2))
+# ('O', (3, 1))
+# ('X', (3, 0))
+# ('O', (0, 3))
+# ('X', (3, 3))
+# ('O', (1, 3))
+# ('X', (0, 1))
+# ('O', (2, 0))
+# ('X', (2, 2))
+# ('X', 'diagonal from left to right')
+# [Finished in 0.065s]
+
+     #     X X X O
+     #     O X _ O
+     #     O _ X _
+     #     X O O X
