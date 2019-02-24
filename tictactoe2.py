@@ -315,30 +315,45 @@ diagonals??
 """
 class TicTacToe:
     def __init__(self, n=None):
-        self.board = self.buildBoard(n)
-        self.order = self.randomOrder(self.board)
-        self.play = True
-        self.count = 0 # keep track of the overall tiles or unneccessary?
-        self.heads = {}
+        # a dictionary of nodes:
         self.rows = {}
         self.cols = {}
         self.diags = {}
+        self.board = self.buildBoard(n) #an array of i-j board indices
+        self.order = self.randomOrder(self.board)
+
+        self.play = True
+        # self.count = 0 # keep track of the overall tiles or unneccessary?
 
     def buildBoard(self, n):
-        """Returns a dictionary of (i,j) index keys with 'None' values."""
-        boardDict = {}
+        """Returns an array of (i,j) index keys to be randomized.
+        Builds rows, cols, and diags dictionaries."""
+        boardDict = []
         for i in range(n):
             for j in range(n):
-                boardDict[i,j] = None
+
+                    if (i == j) or (i + j == n-1):
+                        self.diags[i,j] = None
+
+                    # if i not in self.rows:
+                    #     self.rows[i] = None
+                    if j not in self.rows:
+                        self.rows[j] = None
+
+                    if i not in self.cols:
+                        self.cols[i] = None
+                    # if j not in self.cols:
+                    #     self.cols[j] = None
+
+                    boardDict.append((i,j))
         return boardDict
 
-    def randomOrder(self, dictionary):
+    def randomOrder(self, array):
         """takes a dictionary of index-keys and mixes their order up
         returning and array of index-keys"""
         iter = 0
-
-        order = list(dictionary.keys())# these methods probably add to the time complexity...
-        for key in order:
+        order = array
+        for key in array:
             rando = rand.randint(iter,len(order)-1)
             order[rando], order[iter] = order[iter], order[rando]
             iter += 1
@@ -389,75 +404,82 @@ class TicTacToe:
                         self.homogenous = True
                         self.count = 0 # n-1 to end game
 
-                def addNode(value_i, value_j, player): # must account for a node not being present.
-                    # if value_i in self.heads:
-                    #     self.board[value_i, value_j].column
-                    # else:
-                    #     self.board[value_i, value_j] = LL_Node(value_i, value_j, player)
-                    #     self.heads[self.board[value_i, value_j]]
-                    # if value_j in self.heads:
-                    #     pass
+                # def addNode(value_i, value_j, player): # must account for a node not being present.
+                #     # if value_i in self.heads:
+                #     #     self.board[value_i, value_j].column
+                #     # else:
+                #     #     self.board[value_i, value_j] = LL_Node(value_i, value_j, player)
+                #     #     self.heads[self.board[value_i, value_j]]
+                #     # if value_j in self.heads:
+                #     #     pass
+                #
+                #     if key[0] in self.rows:
+                #         if self.rows[key[0].row!="Nope":
+                #                 self.rows[key[0]].row = LL_Node(i,j,player[value])
+                #
+                #                 # this is getting kind of convoluted.
+                #                 # you don't need to add a new node for each turn.
+                #                 # just keep track of count and homogenity
+                #                 # at each 'starter' tile at the given row/column/diagonal.
+                #
+                #                 dictRow[key].count += 1
+                #             if dictRow[key].count == n:
+                #                 return dictRow[key].player
+                #             if player[value] != dictRow[key].peek(): #peek(), in at the first node and return it's player attribute
+                #                 dictRow[key].homogenous = False
+                #     else:
+                #         self.rows[key[0]].addNode(i,j,player[value])
+                #         self.rows[key[0]].count += 1
+                #     if key in dictRow:
+                #         if dictCol[key].homogenous:
+                #                 dictCol[key].addNode(i,j,player[value])
+                #                 dictCol[key].count += 1
+                #             if dictCol[key].count == n:
+                #                 return dictCol[key].player
+                #             if player[value] != dictCol[key].peek(): #peek(), in at the first node and return it's player attribute
+                #                 dictCol[key].homogenous = False
+                #     else:
+                #         dictCol[key].addNode(i,j,player[value])
+                #         dictCol[key].count += 1
+                #     #look at the indices and add them to the appropriate diagonal bin:
+                #     if i == j:
+                #         if len(dictDiag) != 0:
+                #             if dictDiag['step'].homogenous:
+                #                 dictDiag['step'].addNode(i,j,player[value])
+                #                 dictDiag[key].count += 1
+                #                 if dictDiag['step'].count == n:
+                #                     return dictDiag['step'].player
+                #                 if player[value] != dictDiag['step'].peek():
+                #                     dictDiag['step'].homogenous = False
+                #             else:
+                #                 dictDiag['step'].addNode(i,j,player[value])
+                #                 dictDiag[key].count += 1
+                #     if i + j == n-1:
+                #         if len(dictDiag) != 0:
+                #             if dictDiag['pal'].homogenous:
+                #                 dictDiag['pal'].addNode(i,j,player[value])
+                #                 dictDiag[key].count += 1
+                #                 if dictDiag['pal'].count == n:
+                #                     return dictDiag['pal'].player
+                #                 if player[value] != dictDiag['pal'].peek():
+                #                     dictDiag['pal'].homogenous = False
+                #             else:
+                #                 dictDiag['pal'].addNode(i,j,player[value])
+                #                 dictDiag[key].count += 1
 
-                    if key[0] in self.rows:
-                        if self.rows[key[0].row!="Nope":
-                                self.rows[key[0]].row = LL_Node(i,j,player[value])
-
-                                # this is getting kind of convoluted.
-                                # you don't need to add a new node for each turn.
-                                # just keep track of count and homogenity
-                                # at each 'starter' tile row-column-diagonal.
-
-                                dictRow[key].count += 1
-                            if dictRow[key].count == n:
-                                return dictRow[key].player
-                            if player[value] != dictRow[key].peek(): #peek(), in at the first node and return it's player attribute
-                                dictRow[key].homogenous = False
-                    else:
-                        self.rows[key[0]].addNode(i,j,player[value])
-                        self.rows[key[0]].count += 1
-                    if key in dictRow:
-                        if dictCol[key].homogenous:
-                                dictCol[key].addNode(i,j,player[value])
-                                dictCol[key].count += 1
-                            if dictCol[key].count == n:
-                                return dictCol[key].player
-                            if player[value] != dictCol[key].peek(): #peek(), in at the first node and return it's player attribute
-                                dictCol[key].homogenous = False
-                    else:
-                        dictCol[key].addNode(i,j,player[value])
-                        dictCol[key].count += 1
-                    #look at the indices and add them to the appropriate diagonal bin:
-                    if i == j:
-                        if len(dictDiag) != 0:
-                            if dictDiag['step'].homogenous:
-                                dictDiag['step'].addNode(i,j,player[value])
-                                dictDiag[key].count += 1
-                                if dictDiag['step'].count == n:
-                                    return dictDiag['step'].player
-                                if player[value] != dictDiag['step'].peek():
-                                    dictDiag['step'].homogenous = False
-                            else:
-                                dictDiag['step'].addNode(i,j,player[value])
-                                dictDiag[key].count += 1
-                    if i + j == n-1:
-                        if len(dictDiag) != 0:
-                            if dictDiag['pal'].homogenous:
-                                dictDiag['pal'].addNode(i,j,player[value])
-                                dictDiag[key].count += 1
-                                if dictDiag['pal'].count == n:
-                                    return dictDiag['pal'].player
-                                if player[value] != dictDiag['pal'].peek():
-                                    dictDiag['pal'].homogenous = False
-                            else:
-                                dictDiag['pal'].addNode(i,j,player[value])
-                                dictDiag[key].count += 1
 
 
-
-new = TicTacToe(3)
+new = TicTacToe(4)
 values = []
 for i, order in enumerate(new.order):
     print(i, order)
+print(new.rows.keys(),new.cols.keys(),new.diags.keys())
+
+# X X O
+# X O X
+# O X O
+
+
 
 #
 # #choose____
