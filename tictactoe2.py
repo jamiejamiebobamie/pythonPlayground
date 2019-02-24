@@ -316,13 +316,14 @@ diagonals??
 class TicTacToe:
     def __init__(self, n=None):
         # a dictionary of nodes:
+        self.n = n
         self.rows = {}
         self.cols = {}
         self.diags = {}
         self.board = self.buildBoard(n) #an array of i-j board indices
         self.order = self.randomOrder(self.board)
 
-        self.play = True
+        # self.play = True
         # self.count = 0 # keep track of the overall tiles or unneccessary?
 
     def buildBoard(self, n):
@@ -359,50 +360,51 @@ class TicTacToe:
             iter += 1
         return order
 
-        def play(self):
-            value = 0 #O
-            player = {0: O, 1: X}
-            spacesCount = 0
-            dictRow, dictCol, dictDiag = {}, {}, {}
-            iter = 0
+    def play(self):
+        value = 0 #O
+        player = {0: 'O', 1: 'X'}
+        spacesCount = 0
+        iter = 0
+        turn = ""
+        while spacesCount < self.n**2:
+            value = not value #X starts
+            turn = player[value]
+            key = self.order[iter]
+            iter +=1
+            spacesCount += 1 #update move count each turn.
+            print(turn, key, iter, spacesCount, self.n)
+        else:
+            return "Tie"
+        # for order in self.order):
 
-            while spacesCount < n**2:
-                value = not value #X starts
-                key = self.order[iter]
 
-                spaceCount += 1 #update move count each turn.
-            else:
-                return "Tie"
-            # for order in self.order):
-
-
-
-        class LinkedList:
-            def __init__(self):
-                self.heads = {}
-
-                class LL_Node:
-                    def __init__(self, value_i=None, value_j=None, player=None):
-                        """new idea: the first tile in either a row or column or diagonal
-                        becomes the head of the list you add to the node by setting
-                        the row, column, or diag attributes to the next node in the row,
-                        column, or diagonal, keeping the count (of each...)
-                        before you add a node you check a node's type(?)
-                        and if it conflicts with the current type of the node you set the
-                        row, column, or diagonal to "Nope" to say 'don't add more nodes...'
-                        The tile becomes a 'blocker' for that row, column, or diagonal.
-                        """
-
-                        self.row = None # does this become a graph if you have multiple pointers / next nodes?
-                        self.column = None # how do I keep track of their respective heads?
-                        self.diag = None #
-
-                        self.value = (value_i, value_j) # (i,j)
-                        self.player = player # X or O
-
-                        self.next = None # the chonological order of the tiles played / chosen
-                        self.homogenous = True
-                        self.count = 0 # n-1 to end game
+        #
+        # class LinkedList:
+        #     def __init__(self):
+        #         self.heads = {}
+        #
+        #         class LL_Node:
+        #             def __init__(self, value_i=None, value_j=None, player=None):
+        #                 """new idea: the first tile in either a row or column or diagonal
+        #                 becomes the head of the list you add to the node by setting
+        #                 the row, column, or diag attributes to the next node in the row,
+        #                 column, or diagonal, keeping the count (of each...)
+        #                 before you add a node you check a node's type(?)
+        #                 and if it conflicts with the current type of the node you set the
+        #                 row, column, or diagonal to "Nope" to say 'don't add more nodes...'
+        #                 The tile becomes a 'blocker' for that row, column, or diagonal.
+        #                 """
+        #
+        #                 self.row = None # does this become a graph if you have multiple pointers / next nodes?
+        #                 self.column = None # how do I keep track of their respective heads?
+        #                 self.diag = None #
+        #
+        #                 self.value = (value_i, value_j) # (i,j)
+        #                 self.player = player # X or O
+        #
+        #                 self.next = None # the chonological order of the tiles played / chosen
+        #                 self.homogenous = True
+        #                 self.count = 0 # n-1 to end game
 
                 # def addNode(value_i, value_j, player): # must account for a node not being present.
                 #     # if value_i in self.heads:
@@ -470,10 +472,11 @@ class TicTacToe:
 
 
 new = TicTacToe(4)
-values = []
-for i, order in enumerate(new.order):
-    print(i, order)
-print(new.rows.keys(),new.cols.keys(),new.diags.keys())
+new.play()
+# values = []
+# for i, order in enumerate(new.order):
+#     print(i, order)
+# print(new.rows.keys(),new.cols.keys(),new.diags.keys())
 
 # X X O
 # X O X
