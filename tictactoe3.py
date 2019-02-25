@@ -99,7 +99,7 @@ class TicTacToe:
         self.n = n
         self.go = "Tie" # The object that is returned when the game is over.
 
-        #the bins
+        # the bins
         self.rows = {}
         self.cols = {}
         self.diags = {'step': [True, "", 0], 'same': [True, "", 0]}
@@ -202,7 +202,7 @@ class TicTacToe:
                         self.diags['same'][1] = turn
                         self.diags['same'][2] += 1
                         if self.diags['same'][2] == self.n:
-                            self.go = (turn, 'diagonal from left to right')
+                            self.go = (turn, 'diagonal from 0,0 to n-1,n-1')
                     else:
                         self.diags['same'][0] = False
 
@@ -212,7 +212,7 @@ class TicTacToe:
                         self.diags['step'][1] = turn
                         self.diags['step'][2] += 1
                         if self.diags['step'][2] == self.n:
-                            self.go = (turn, 'diagonal from right to left')
+                            self.go = (turn, 'diagonal from n-1,0 to 0,n-1')
                     else:
                         self.diags['step'][0] = False
 
