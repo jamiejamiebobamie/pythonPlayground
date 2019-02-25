@@ -112,7 +112,7 @@ class TicTacToe:
 
     def buildBoard(self, n):
         """Returns an array of (i,j) index keys to be randomized.
-        Adds keys to the rows, cols, and diags dictionaries."""
+        Adds keys to the rows and cols dictionaries."""
 
         boardDict = []
         diagCount = 0
