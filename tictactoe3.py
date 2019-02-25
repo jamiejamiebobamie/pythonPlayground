@@ -157,14 +157,14 @@ class TicTacToe:
             j = key[1]
 
 
-# self.rows[j][0] == homogenous?
-# self.rows[j][1] == X/O?
-# self.rows[j][2] == count of X's/O's?
+# self.rows[i][0] == homogenous?
+# self.rows[i][1] == X/O?
+# self.rows[i][2] == count of X's/O's?
 
-# Check to see if row j is 'homogenous' (contains only X's or O's):
+# Check to see if row i is 'homogenous' (contains only X's or O's):
             if self.rows[i][0]:
 
-# Check to see if any square in row j has been played. If it has been played,
+# Check to see if any square in row i has been played. If it has been played,
 # check to see if it was the same person who's current turn it is.
                 if self.rows[i][1] == "" or player[value] == self.rows[i][1]:
 
@@ -192,7 +192,7 @@ class TicTacToe:
                     if self.cols[j][2] == self.n:
                         self.go = (turn, 'column ' + str(j))
                 else:
-                    self.rows[i][0] = False
+                    self.cols[j][0] = False
 
 # On boards of odd-sized 'n' (n = 3,5,7,etc...)
 # the middle square is part of both diagonals: 'step' and 'same':
