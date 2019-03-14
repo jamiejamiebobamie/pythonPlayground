@@ -47,6 +47,7 @@ def howMany(A):
         for char in e:
             if local:
                 if char == '@':
+                    email += char
                     local = False
                 elif char == "+":
                     plus = True
