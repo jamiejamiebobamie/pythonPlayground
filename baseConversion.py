@@ -12,6 +12,7 @@ def convertBase(inp, baseFrom, baseTo):
         number = 0
         for i, _ in enumerate(inp):
             number += int(inp[len(inp)-1-i]) * (baseFrom**i)
+            # print(number)
         return str(number)
 
     def _turn_into_baseTo(num):
@@ -20,6 +21,15 @@ def convertBase(inp, baseFrom, baseTo):
             number += int(inp[len(inp)-1-i]) * (baseTo**i)
         return number
 
-    return _turn_into_baseTo(_turn_into_decimal())
+    if baseTo != 10:
+        return _turn_into_baseTo(_turn_into_decimal())
+    else:
+        return _turn_into_decimal()
 
-print(convertBase('111', 10, 2))
+
+
+
+
+print(convertBase('306', 10, 7))
+
+#BROKEN: The idea was to convert to decimal and then convert to the new base, but my convert to funtion is wrong. (Speed coding.)
