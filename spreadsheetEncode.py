@@ -17,8 +17,13 @@ def convert_Column_to_Int(column_id):
         integer += 26**(abs(iter)-1) * alpha[column_id[iter]]
     return integer
 
-print(convert_Column_to_Int("D"))
+print(convert_Column_to_Int("ZZZ"))
 
 # I would test this function by writing another function
 # that converts back to column_id's using modulus.
 # time complexity: O(n). space complexity: O(n)? ...negligible?
+
+#Book's answer:
+
+def ss_decode_col_id(col):
+    return reduce(lambda result, c: result * 26 + ord(c) - ord('A') + 1, col, 0)
