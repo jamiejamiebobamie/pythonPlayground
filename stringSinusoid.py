@@ -14,22 +14,19 @@ Output: "GSGSEKFREKEOE"
 import itertools
 
 def stringSinusoid(s):
+    """Incorrect, wrong. Does not print sinusoidally."""
     result = [[],[],[]]
     iter = 0
     for i, c in enumerate(s):
         result[i%3].append(c)
-    print(result)
     return "".join(itertools.chain(*result))
 
-print(stringSinusoid("string"))
 
 
 #from Elements of Programming Interviews in Python, page 78:
-
 def snake_string_pythonic(s):
     return s[1::4] + s[::2] + s[3::4]
 
-print(snake_string_pythonic('string'))
 
 #[['s', 'i'], ['t', 'n'], ['r', 'g']]
 # sitnrg
@@ -46,3 +43,11 @@ print(snake_string_pythonic('string'))
 #3    r  g
 
 #mine doesn't work... mine's like descending fashion...
+
+
+
+#def snake_string_pythonic(s):
+#    return s[1::4] + s[::2] + s[3::4]
+#           ^ starting at index 1, every 4 indexes from index 1 add the item to the beginning of the result
+#                     ^starting at index zero add every 2 second item to the result
+#                               ^starting at index 3 add every fourth entry from index 3 to the result
