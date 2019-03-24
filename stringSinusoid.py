@@ -1,5 +1,5 @@
 """
-Turn a string into a sinusoidal "snake" fashion. Example:
+Turn a string into its sinusoidal "snake" fashion. Example:
 
 Input: "GEEKSFORGEEKS"
 
