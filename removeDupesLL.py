@@ -1,6 +1,6 @@
-# This is  problem from Elements of Programming Interviews in Python on pg. 91:
-# Write a program that takes as input a singly linked list of integers in sorted order,
-# and removes duplicates from it. The list should be sorted.
+"""This is  problem from Elements of Programming Interviews in Python on pg. 91:
+Write a program that takes as input a singly linked list of integers in sorted order,
+and removes duplicates from it. The list should be sorted."""
 
 class Node:
     def __init__(self, data=0, next=None):
@@ -21,38 +21,38 @@ f = Node(5, g)
 e = Node(3, f)
 d = Node(3, e)
 c = Node(2, d)
-b = Node(0, c)
+b = Node(1, c)
 a = Node(0, b)
 
 L = a
 
-dummy_head = L
-
-while L:
-    print(L.data)
-    L = L.next
-
+def iterateList(L):
+    """Note: Does not alter 'L'."""
+    array=[]
+    while L:
+        array.append(L.data)
+        L = L.next
+    return array
 
 def removeDupes(L):
+    """
+    Uses two iterators to traverse the list.
+    The 'temp' iterator stops when there is a duplicate
+    and continues when a unique entry is reached.
+    """
     head = temp = L
-    L = L.next
     bool = False
     while L:
         if temp.data != L.data:
             if bool == True:
-                # temp.next = L
-                head.next = L
+                temp.next = L
                 bool = False
             temp = L
-            L = L.next
         else:
             bool = True
-            print(bool, head.data)
-            L = L.next
-        return head
+        L = L.next
+    return head
 
 
-
-while removeDupes(dummy_head):
-    print(dummy_head.data)
-    dummy_head = dummy_head.next
+print(iterateList(L))
+print(iterateList(removeDupes(L)))
