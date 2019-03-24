@@ -45,7 +45,7 @@ def merge(L):
 
 
     while head.data % 2 != 0:
-        
+
         odd = odd.next
         head = head.next
 
