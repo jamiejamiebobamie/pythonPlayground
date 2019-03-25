@@ -1,8 +1,7 @@
 """
 
-Write a function that merges two LL's, starting with the
-nodes with even-numbered data followed by
-the nodes with odd-numbered data.
+Write a function that merges an LL into nodes with even-numbered data
+followed by nodes with odd-numbered data.
 
 """
 
@@ -12,21 +11,13 @@ class Node:
         self.data = data
         self.next = next
 
-# g = Node(5)
-# f = Node(5, g)
-# e = Node(4, f)
-# d = Node(3, e)
-# c = Node(2, d)
-# b = Node(1, c)
-# a = Node(0, b)
-
-h = Node(7)
-g = Node(5, h)
-f = Node(5, g)
-e = Node(3, f)
-d = Node(3, e)
-c = Node(2, d)
-b = Node(1, c)
+h = Node(8)
+g = Node(7, h)
+f = Node(6, g)
+e = Node(5, f)
+d = Node(4, e)
+c = Node(3, d)
+b = Node(2, c)
 a = Node(1, b)
 
 L = a
@@ -40,6 +31,10 @@ def iterateList(L):
     return array
 
 def merge(L):
+    """
+Function iterates through the list once and returns the even_head with
+even data nodes followed by odd data nodes.
+    """
     even_head = even = Node()
     odd_head = odd = Node()
     while L:
@@ -52,34 +47,7 @@ def merge(L):
         L = L.next
     else:
         odd.next = None
-        even.next = odd_head
-    return even_head
+        even.next = odd_head.next
+    return even_head.next
 
 print(iterateList(merge(L)))
-
-
-
-
-    # print("print"+str(iterateList(even)))
-
-
-    # odd.next = None
-    # new_head = head
-    #
-    #
-    # while head.next:
-    #     if head.data % 2 == 0:
-    #         head = head.next
-    #     else:
-    #         odd.next = head
-    #         odd = odd.next
-    #         while odd.data % 2 != 0:
-    #             odd = odd.next
-    #     head.next = odd_head
-
-    # print(iterateList(odd))
-
-    # return new_head
-
-# print(iterateList(L))
-# print(iterateList(merge(L)))
