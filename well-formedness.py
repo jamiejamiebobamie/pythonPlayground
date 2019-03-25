@@ -21,18 +21,27 @@ Write a program to test if a string made up of the characters
 # print(wellFormed(s))
 
 s = "{{[()]}}"
-s="{{{}}}"
+s="{{{{[[[)))}}}}"
 
 def wellFormed(s):
+    #stack to add opening characters to
     stack = []
+    lookup = {"}":"{", ")":"(", "]":"["}
     for c in s:
+        print(c,stack)
+    #if c is a closing character
         if c == "}" or  c == ")" or  c == "]":
+            #if the stack of opening character is not empty
             if len(stack):
-                stack.pop()
+                if stack.pop() != lookup[c]:#need to compare the popped element with the lookup
+                    return False
+            #if the stack is empty, a closing character came before an opening one
             else:
                 return False
+        #c is an opening character, add it to the stack
         else:
             stack.append(c)
+    #if we get through the list and the stack isn't empty return false
     if len(stack):
         return False
     else:
