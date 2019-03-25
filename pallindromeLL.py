@@ -28,6 +28,13 @@ a = Node(1, b)
 L1 = a #not pallindromic
 L2 = h #pallindromic
 
+def iterateList(L):
+    array = []
+    while L:
+        array.append(L.data)
+        L = L.next
+    return array
+
 
 def isPallindrome(L):
     #trying to not do the brute force method of putting all of the data in an array
@@ -43,40 +50,21 @@ def isPallindrome(L):
             L = L.next
         return count
 
+    bool = True
     count = 0
     dummy_head = L
     n = length(L)
 
-    while count < n-1:
-        print(L.data)
-        L = L.next
-        count+=1
-    if dummy_head.data == L.next.data:
-        L.next.next, L.next = dummy_head.next, dummy_head
-        n=n-1
-    else:
-        print(dummy_head.data, L.next.data)
-        return 0
+    while bool and L:
+        while count < n-1:
+            dummy_head = dummy_head.next
+            count+=1
+        else:
+            bool = dummy_head.data == L.data
+            print(L,dummy_head, L == dummy_head, L.data, dummy_head.data, n, bool)
+            count = 0
+            n -= 2
+            dummy_head = L.next
+            L = L.next
 
-print(isPallindrome(L2))
-
-
-
-    # if n % 2 == 0: #if the length of the list is even...
-    #     while count < n/2+1:
-    #         L = L.next
-    #         count+=1
-    # else: #if the length of the list is odd...
-    #     while count < n//2 + 2:
-    #         L = L.next
-    #         count+=1
-
-    # #if even
-    # dummy_head=1 2 3 L=321
-    # #if odd
-    # dummy_head=1 2 3 L=21
-    #trying to use two iterators and compare them as they traverse their part of the list...
-    #going to try to reverse the list in place...
-
-
-# print(isPallindrome(L2))
+isPallindrome(L2)
