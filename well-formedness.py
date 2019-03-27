@@ -3,6 +3,10 @@
 Write a program to test if a string made up of the characters
 '(', ')', '[', ']', '{', and '}' is well-formed.
 
+Elements of Programming Interviews pg. 102
+
+see "balanced.py" in this directory for a similar problem.
+
 """
 
 
@@ -20,18 +24,17 @@ Write a program to test if a string made up of the characters
 #
 # print(wellFormed(s))
 
-s = "{{[()]}}"
-s="{{{{[[[)))}}}}"
+s = "{{[()]}}"#well-formed
+s="{{{{[[[)))}}}}"#not well-formed
 
 def wellFormed(s):
     #stack to add opening characters to
     stack = []
     lookup = {"}":"{", ")":"(", "]":"["}
     for c in s:
-        print(c,stack)
     #if c is a closing character
         if c == "}" or  c == ")" or  c == "]":
-            #if the stack of opening character is not empty
+            #if the stack of opening characters is not empty
             if len(stack):
                 if stack.pop() != lookup[c]:#need to compare the popped element with the lookup
                     return False
