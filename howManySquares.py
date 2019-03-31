@@ -5,6 +5,9 @@ A = [(0,0), (0,1), (0,3), (0,4),
 (4,0), (4,1), (4,3), (4,4)]
 
 def howMany(A):
+    """
+    Does not work.
+    """
     result = []
     def __test(vertex1, vertex2):
         #the test needs to check that the sides are equal and then check to make sure all of the square's vertices are in A, this second check isn't correct.
@@ -22,4 +25,26 @@ def howMany(A):
     print(result)
     return len(result)
 
-print(howMany(A))
+# print(howMany(A))
+
+
+def howManyTwo(A):
+    """
+    (Works.)
+
+    This function assumes that the first vertex is the top-leftmost point
+    and the last vertex is the bottom-rightmost point.
+
+    It also assumes the input array has only integer vertex values.
+    """
+    result = 0
+
+    increment = A[len(A)-1][0]-A[0][0]
+
+    for point in A:
+        for i in range(1, increment+1):
+            if (point[0]+i, point[1]) in A and (point[0], point[1]+i)in A and (point[0]+i, point[1]+i)in A:
+                result+=1
+    return result
+
+print(howManyTwo(A))
