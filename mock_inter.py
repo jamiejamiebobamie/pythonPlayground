@@ -72,27 +72,55 @@ import math
 def retryRetry(corpus):
     lookup = {}
     for i, array in enumerate(corpus):
-        for j, words in enumerate(array):
+        for words in array:
             words = words.split(" ")
-            print(words)
+            # print(words)
             for word in words:
                 if word not in lookup:
                     lookup[word] = len(lookup)
-                    print(lookup)
+    print(lookup)
 
     result = [ [0]*len(lookup) ] * len(corpus)
+                #2                   #3
     print(result)
 
     for i, array in enumerate(corpus):
         for words in array:
             words = words.split(" ")
-            for word in words:
-                print(i,word,lookup[word],result[i][lookup[word]])
-                print(result)
-                #wtf...
+            # print(corpus[i],words[j])
+            for j, word in enumerate(words):
+                print(i,lookup[word],j,word)
                 result[i][lookup[word]] +=1
+                # print(result)
     return result
 
-
-
 print(retryRetry(corpus))
+
+
+# (0, 0, 0, 'hey')
+# (0, 1, 1, 'ho')
+# (0, 0, 2, 'hey')
+# (1, 0, 0, 'hey')
+# (1, 1, 1, 'ho')
+# (1, 0, 2, 'hey')
+# (1, 0, 3, 'hey')
+# (2, 0, 0, 'hey')
+# (2, 0, 1, 'hey')
+# (2, 0, 2, 'hey')
+
+# {'hey': 0, 'ho': 1}
+# [[0, 0], [0, 0], [0, 0]]
+# [[1, 0], [1, 0], [1, 0]]
+# [[1, 1], [1, 1], [1, 1]]
+# [[2, 1], [2, 1], [2, 1]]
+# [[3, 1], [3, 1], [3, 1]]
+# [[3, 2], [3, 2], [3, 2]]
+# [[4, 2], [4, 2], [4, 2]]
+# [[5, 2], [5, 2], [5, 2]]
+# [[6, 2], [6, 2], [6, 2]]
+# [[7, 2], [7, 2], [7, 2]]
+# [[8, 2], [8, 2], [8, 2]]
+# [[8, 2], [8, 2], [8, 2]]
+# [Finished in 0.066s]
+
+# I can't understand why they are all updating...
