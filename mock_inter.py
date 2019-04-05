@@ -89,21 +89,8 @@ def retryRetry(corpus):
             for word in words:
                 print(i,word,lookup[word],result[i][lookup[word]])
                 print(result)
+                #wtf...
                 result[i][lookup[word]] +=1
-
-                # if type(corpus[i][j][lookup[word]]) != int:
-                #     corpus[i][j][lookup[word]] = 1
-                # else:
-                #      corpus[i][j][lookup[word]] += 1
-                # if lookup[word] < len(words):
-                    # print(words[lookup[word]])
-                #     if type(words[lookup[word]]) == int:
-                #         words[lookup[word]] += 1
-                #     else:
-                #         words[lookup[word]] = 1
-                # else:
-                #     words.append(len(lookup)*0)
-                #     words[lookup[word]] = 1
     return result
 
 
