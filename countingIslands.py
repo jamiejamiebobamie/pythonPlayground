@@ -1,12 +1,42 @@
 import collections
 
 def countIslands(numberOfRows, numberOfColumns, matrix):
-    result = []
 
+    rows = {}
     count = 0
 
-    k = m = 0
-    while k < numberOfRows:
+    for i, row in enumerate(matrix):
+        for j, column in enumerate(row):
+            if column == 1:
+                if i in rows:
+                    rows[i].append(j)
+                else:
+                    rows[i] = [j]
+    print rows
+
+    islands = []
+    island = []
+    for _ in range(numberOfRows):
+        if _ in rows:
+            while rows[_]:
+                while len(island)<2 or island
+                i+=1
+                island.append(rows[_].pop())
+                else:
+                    islands.append(island)
+                    island = []
+                    i = 0
+                break
+
+
+
+    # k = m = 0
+    # while result:
+    #     count+=1
+    #     current = result.pop()
+    #     while current[0] + k
+
+
     #
     #     while matrix[k][m] != 1 and k < numberOfRows:
     #         m=0
@@ -23,17 +53,17 @@ def countIslands(numberOfRows, numberOfColumns, matrix):
 
 #_____
 
-        while matrix[k][m] == 1 and k < numberOfRows:
-            k+=1
-        else:
-            while matrix[k][m] == 1 and m < numberOfColumns:
-                m+=1
-            else:
-                count+=1
-                k -= 1
-                m = 0
-
-        return count
+        # while matrix[k][m] == 1 and k < numberOfRows:
+        #     k+=1
+        # else:
+        #     while matrix[k][m] == 1 and m < numberOfColumns:
+        #         m+=1
+        #     else:
+        #         count+=1
+        #         k -= 1
+        #         m = 0
+        #
+        # return count
 
 
 
