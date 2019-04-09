@@ -14,19 +14,31 @@ def countIslands(numberOfRows, numberOfColumns, matrix):
                     rows[i] = [j]
     print rows
 
-    islands = []
-    island = []
+    # islands = []
+    # island = []
     for _ in range(numberOfRows):
+        k = 0
         if _ in rows:
-            while rows[_]:
-                while len(island)<2 or island
+            count+=1
+            i = 1
+            curr = rows[_].pop()
+            while curr-i in rows[_+k]:
+                print(_,rows[_+k],curr-i)
                 i+=1
-                island.append(rows[_].pop())
-                else:
-                    islands.append(island)
-                    island = []
-                    i = 0
-                break
+            else:
+                k+=1
+    return count
+
+
+    #         while rows[_]:
+    #             while len(island)<2 or island[i]
+    #             i+=1
+    #             island.append(rows[_].pop())
+    #             else:
+    #                 islands.append(island)
+    #                 island = []
+    #                 i = 0
+    #             break
 
 
 
@@ -67,10 +79,10 @@ def countIslands(numberOfRows, numberOfColumns, matrix):
 
 
 
-matrix = [  [1, 1, 0, 0, 0],
-            [0, 1, 0, 0, 1],
-            [1, 0, 0, 1, 1],
+matrix = [  [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1],
+            [0, 0, 0, 1, 1],
             [0, 0, 0, 0, 0],
-            [1, 0, 1, 1, 1] ]
+            [0, 0, 0, 0, 0] ]
 
 print(countIslands(5,5, matrix))
