@@ -28,34 +28,37 @@ class Relationships():
     def __init__(self):
         self.relations = {}
 
-    def buildHierarchy(self,test_input):
+    def buildHierarchy(self, test_input):
+        gate = True
         for entry in test_input:
-            if entry['name'] not in self.relations:
-                self.relations[entry['name']] = Node(entry['name'], entry['manager'])
-            else:
-                self.relations[entry['name']].manager = entry['manager']
-            if entry['manager'] not in self.relations:
-                self.relations[entry['manager']] = Node(entry['manager'])
-            else:
+            # if entry['name'] not in self.relations:
+            #     self.relations[entry['name']] = Node(entry['name'], entry['manager'])
+            if entry['manager']not in self.relations:
                 self.relations[entry['manager']].employees.append(entry['name'])
+                
+                if gate:
+                    self.relations[None] = Node(None)
+                    gate = False
+                self.relations[None].employees.append(entry['name'])
+            self.relations[entry['manager']].employees.append(entry['name'])
 
     def findHierarchy(self):
         def __recursiveHelper(key_name, output):
             for employee in self.relations[key_name].employees:
                 output += str(employee) + "\n" + "   "
-                # print(output) #two issues:
-                                #having trouble returning the concatenated output
-                                    #from the recursive function
-                                #the top of the hierarchy are people with 'None'
-                                    #as a manager and 'None' is being overwritten
-                                        #as there are two people at the top.
-
+                print(output)
                 __recursiveHelper(employee, output)
-                # return output
+                #two issues:
+                #having trouble returning the concatenated output
+                    #from the recursive function
+                #the top of the hierarchy are people with 'None'
+                    #as a manager and 'None' is being overwritten
+                        #as there are two people at the top.
+
 
         output = ""
         for relation in self.relations:
-            print(relation)
+            # print(relation)
             if relation == None:
                 __recursiveHelper(self.relations[relation].name, output)
 
@@ -70,6 +73,7 @@ class Node():
 
 
 relationship = Relationships()
-
 relationship.buildHierarchy(test_input)
+# print(relationship.relations)
+print(relationship.relations[None].employees)
 print(relationship.findHierarchy())
