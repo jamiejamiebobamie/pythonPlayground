@@ -43,7 +43,13 @@ class Relationships():
         def __recursiveHelper(key_name, output):
             for employee in self.relations[key_name].employees:
                 output += str(employee) + "\n" + "   "
-                # print(output)
+                # print(output) #two issues:
+                                #having trouble returning the concatenated output
+                                    #from the recursive function
+                                #the top of the hierarchy are people with 'None'
+                                    #as a manager and 'None' is being overwritten
+                                        #as there are two people at the top.
+
                 __recursiveHelper(employee, output)
                 # return output
 
