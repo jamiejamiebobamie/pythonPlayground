@@ -39,21 +39,16 @@ class Relationships():
     def findHierarchy(self):
         def __recursiveHelper(key_name, output, indent):
             if key_name in self.relations:
-                # if key_name != None:
-                #     output += str(key_name) + "\n"
                 for employee in self.relations[key_name].employees:
-                    output += "   "*indent+ str(employee) +"\n"
-                    print(output)
+                    output += "   " * indent + str(employee) +"\n"
                     __recursiveHelper(employee, output, indent+1)
             else:
+                print(output)
                 return output
 
-                #two issues:
+                #only issue:
                 #having trouble returning the concatenated output
                     #from the recursive function
-                #the top of the hierarchy are people with 'None'
-                    #as a manager and 'None' is being overwritten
-                        #as there are two people at the top.
 
 
         output = ""
@@ -74,31 +69,17 @@ class Node():
 
 relationship = Relationships()
 relationship.buildHierarchy(test_input)
-# print(relationship.relations)
-print(relationship.relations[None].employees)
 print(relationship.findHierarchy())
 
 
 """
 Printed output:
 
-
-['Trey', 'Alex']
-Trey
-
-Trey
-   Paul
-
 Trey
    Paul
       Joe
 
-Trey
-   Paul
-      Joe
-      Larry
-
-Trey
+*Trey
    Paul
       Joe
       Larry
@@ -110,22 +91,31 @@ Trey
 
 Trey
    Paul
-   Peter
-   Mary
-
-Trey
-Alex
+   *Peter
+   *Mary
 
 Trey
 Alex
    Jesse
 
 Trey
-Alex
+*Alex
+   Jesse
+   Henry
+
+this should be the output:
+
+*Trey
+   Paul
+      Joe
+      Larry
+         Moe
+    *Peter
+    *Mary
+*Alex
    Jesse
    Henry
 
 
-[Finished in 0.435s]
 
 """
