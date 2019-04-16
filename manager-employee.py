@@ -29,25 +29,25 @@ class Relationships():
         self.relations = {}
 
     def buildHierarchy(self, test_input):
-        gate = True
+        """This function """
         for entry in test_input:
-            # if entry['name'] not in self.relations:
-            #     self.relations[entry['name']] = Node(entry['name'], entry['manager'])
             if entry['manager']not in self.relations:
+                self.relations[entry['manager']] = Node(entry['manager'], entry['name'])
+            else:
                 self.relations[entry['manager']].employees.append(entry['name'])
-                
-                if gate:
-                    self.relations[None] = Node(None)
-                    gate = False
-                self.relations[None].employees.append(entry['name'])
-            self.relations[entry['manager']].employees.append(entry['name'])
 
     def findHierarchy(self):
         def __recursiveHelper(key_name, output):
-            for employee in self.relations[key_name].employees:
-                output += str(employee) + "\n" + "   "
-                print(output)
-                __recursiveHelper(employee, output)
+            if key_name in self.relations:
+                if key_name != None:
+                    output += str(key_name) + "\n"
+                for employee in self.relations[key_name].employees:
+                    output += str(employee) + "\n" + "   "
+                    print(output)
+                    __recursiveHelper(employee, output)
+            else:
+                return output
+
                 #two issues:
                 #having trouble returning the concatenated output
                     #from the recursive function
@@ -58,7 +58,6 @@ class Relationships():
 
         output = ""
         for relation in self.relations:
-            # print(relation)
             if relation == None:
                 __recursiveHelper(self.relations[relation].name, output)
 
@@ -66,10 +65,10 @@ class Relationships():
 
 
 class Node():
-    def __init__(self,name,manager=None):
+    def __init__(self,name, employee):
         self.name = name
-        self.manager = manager
         self.employees = []
+        self.employees.append(employee)
 
 
 relationship = Relationships()
