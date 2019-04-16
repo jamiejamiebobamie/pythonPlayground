@@ -30,26 +30,30 @@ class Relationships():
 
     def buildHierarchy(self,test_input):
         for entry in test_input:
-            if entry['name'] not in self.relations and not None:
+            if entry['name'] not in self.relations:
                 self.relations[entry['name']] = Node(entry['name'], entry['manager'])
             else:
                 self.relations[entry['name']].manager = entry['manager']
-            if entry['manager'] not in self.relations and not None:
+            if entry['manager'] not in self.relations:
                 self.relations[entry['manager']] = Node(entry['manager'])
             else:
                 self.relations[entry['manager']].employees.append(entry['name'])
 
-
     def findHierarchy(self):
+        def __recursiveHelper(key_name, output):
+            for employee in self.relations[key_name].employees:
+                output += str(employee) + "\n" + "   "
+                # print(output)
+                __recursiveHelper(employee, output)
+                # return output
+
         output = ""
         for relation in self.relations:
+            print(relation)
             if relation == None:
-                print(self.relations[relation].employees)
-                # output += relation.name + "\n" + "   "
-                # while relation.employees:
-                #     output += relation.employees.pop() + "\n" + "   "
-                # else:
-                #     relation
+                __recursiveHelper(self.relations[relation].name, output)
+
+        return output
 
 
 class Node():
@@ -62,5 +66,4 @@ class Node():
 relationship = Relationships()
 
 relationship.buildHierarchy(test_input)
-print(relationship.relations)
-relationship.findHierarchy()
+print(relationship.findHierarchy())
