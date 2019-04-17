@@ -30,8 +30,8 @@ class Relationships():
 
     def buildHierarchy(self, test_input):
         """This function builds a dictionary of managers to manager nodes.
-        The keys are strings of the names of managers and the values are nodes
-        2 fields, the name of the manager and an array that that manager employes."""
+        The keys are strings of the names of managers and the values are nodes:
+        2 fields, the name of the manager and an array that that manager employs."""
         for entry in test_input:
             if entry['manager']not in self.relations:
                 self.relations[entry['manager']] = Node(entry['manager'], entry['name'])
@@ -45,26 +45,31 @@ class Relationships():
             if key_name in self.relations:
                 for employee in self.relations[key_name].employees:
                     output += "   " * indent + str(employee) +"\n"
-                    __recursiveHelper(employee, output, indent+1)
+                    return __recursiveHelper(employee, output, indent+1)
             else:
-                print(output)
+                return output
 
-                #only issue:
-                #having trouble returning the concatenated output
-                    #from the recursive function
 
+            #experimenting with Iter() and next() iterators/generators
+            #and a while loop in the recursive function:
+
+            # employees = iter(self.relations)
+            # employee = next(employees, "stop")
+            # while employees and employee != 'stop':
+            #     print(employee)
+            #     employee = next(employees, "stop")
+
+
+
+        #only issue:
+        #having trouble returning the concatenated output
+            #from the recursive function
 
         output = ""
         indent = -1
-        for relation in self.relations:
-            #self.relations is a dictionary of manager-name string keys.
-            #relation == None is the 'root' of the dictionary, the employees of
-            #None are the top-ranking managers.
-            #
-            if relation == None:
-                return __recursiveHelper(self.relations[relation].name, output, indent+1)
-
-        return output
+        #   self.relations is a dictionary of manager-name string keys.
+        #   The employees of None are the top-ranking managers.
+        return __recursiveHelper(None, output, indent+1)
 
 
 class Node():
