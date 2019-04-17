@@ -45,30 +45,40 @@ class Relationships():
             if key_name in self.relations:
                 for employee in self.relations[key_name].employees:
                     output += "   " * indent + str(employee) +"\n"
-                    return __recursiveHelper(employee, output, indent+1)
+                    # return __recursiveHelper(employee, output, indent+1)
+                    __recursiveHelper(employee, output, indent+1)
             else:
+                print(output)
                 return output
 
 
-            #experimenting with Iter() and next() iterators/generators
-            #and a while loop in the recursive function:
+        #experimenting with Iter() and next() iterators/generators
+        #and a while loop in the recursive function:
 
-            # employees = iter(self.relations)
-            # employee = next(employees, "stop")
-            # while employees and employee != 'stop':
-            #     print(employee)
-            #     employee = next(employees, "stop")
+        # def __recursiveHelper(key_name, output, indent):
+        #     if key_name in self.relations:
+        #         employees = iter(self.relations[key_name].employees)
+        #         employee = next(employees, "stop")
+        #         while employees and employee != 'stop':
+        #             output += "   " * indent + str(employee) +"\n"
+        #             __recursiveHelper(next(employees, "stop"), output, indent+1)
+        #         else:
+        #             employee = next(employees, "stop")
+        #
+        #     else:
+        #         return output
 
 
 
-        #only issue:
-        #having trouble returning the concatenated output
-            #from the recursive function
+
 
         output = ""
         indent = -1
         #   self.relations is a dictionary of manager-name string keys.
         #   The employees of None are the top-ranking managers.
+        #   only issue:
+        #       having trouble returning the concatenated output
+        #       from the recursive function:
         return __recursiveHelper(None, output, indent+1)
 
 
@@ -81,6 +91,8 @@ class Node():
 
 relationship = Relationships()
 relationship.buildHierarchy(test_input)
+# for rel in relationship.relations:
+#     print(relationship.relations[rel].employees)
 print(relationship.findHierarchy())
 
 
@@ -127,7 +139,5 @@ this should be the output:
 *Alex
    Jesse
    Henry
-
-
 
 """
