@@ -14,15 +14,16 @@ i an j
 def swapBits(x, i, j):
     result = []
     string_int = str(x)
-    for index, bit in enumerate(string_int):
-        if index == i:
-            result.append(string_int[j])
-            continue
-        elif index == j:
-            result.append(string_int[i])
-            continue
-        else:
-            result.append(bit)
+    if string_int[i] != string_int[j]:
+        for index, bit in enumerate(string_int):
+            if index == i:
+                result.append(string_int[j])
+                continue
+            elif index == j:
+                result.append(string_int[i])
+                continue
+            else:
+                result.append(bit)
     return "".join(result)
 
 #solution page 27
@@ -39,5 +40,7 @@ def swap_bits(x, i, j):
 
 test = 10001
 print(swapBits(test, 2,4))
+
+#the book's solutions aren't giving me the same/right answers.
 print(swap_bits(test,2,4))
 print((test >> 4))
