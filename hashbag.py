@@ -2,15 +2,28 @@
 
 My attempt at making a bi-directional map / multi-map, also known as a hashbag.
 
-TO-DO: Lookup the syntax of 'super(hashBag, self).__delitem__(self[key])''
+When a key-value pair is added to the dictionary, an inverse value-key is also inserted.
+So you can reference keys by calling the dictionary with the values.
+
+dict[key] = value, dict[value] = key
+
+Initializing the hashBag:
+P = hashBag({2:3, 4:5})
+(Must wrap the arguments in curly braces.)
+
+REFERENCE:
+https://stackoverflow.com/questions/3318625/how-to-implement-an-efficient-bidirectional-hash-table
+https://stackoverflow.com/questions/2390827/how-to-properly-subclass-dict-and-override-getitem-setitem
+https://www.pythonforbeginners.com/super/working-python-super-function
 
 """
 
 
 class hashBag(dict):
-    def __init__(self):
-        pass
-
+    def __init__(self, *args, **kwargs):
+        super(hashBag, self).__init__(*args, **kwargs)
+        for key, value in self.items():
+            super(hashBag, self).__setitem__(value, key)
 
     def __setitem__(self, key, value):
         if key in self: #remove both the key-value and the value-key if present:
@@ -18,15 +31,3 @@ class hashBag(dict):
             super(hashBag, self).__delitem__(key)
         super(hashBag, self).__setitem__(key, value) #update the key with the new value
         super(hashBag, self).__setitem__(value, key)
-
-
-P = hashBag()
-
-print(P)
-
-P['i'] = 1
-print(P)
-
-P['i'] = 2
-print(P)
-print(P.get(2))
