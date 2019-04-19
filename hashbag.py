@@ -26,8 +26,8 @@ class hashBag(dict):
             super(hashBag, self).__setitem__(value, key)
 
     def __setitem__(self, key, value):
-        if key in self: #remove both the key-value and the value-key if present:
+        if key in self: #remove both the key-key:value-value and the key-value:value-key if present
             super(hashBag, self).__delitem__(self[key])
             super(hashBag, self).__delitem__(key)
-        super(hashBag, self).__setitem__(key, value) #update the key with the new value
-        super(hashBag, self).__setitem__(value, key)
+        super(hashBag, self).__setitem__(key, value) #update the key-key with the new value-value
+        super(hashBag, self).__setitem__(value, key) #update the key-value with the new value-key
