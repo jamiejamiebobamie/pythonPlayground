@@ -63,3 +63,10 @@ print(heapq.nsmallest(2,A)[1])
 print(-1*heapq.nlargest(2,B)[1])
 #what is the time complexity between these two methods?
 #it would seem like nlargest from B might be more performant.
+
+# https://docs.python.org/2/library/heapq.html:
+# "The latter two functions perform best for smaller values of n.
+# For larger values, it is more efficient to use the sorted() function.
+# Also, when n==1, it is more efficient to use the built-in min() and max() functions.
+# If repeated usage of these functions is required,
+# consider turning the iterable into an actual heap."(?)
