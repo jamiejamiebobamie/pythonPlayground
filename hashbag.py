@@ -8,7 +8,7 @@ So you can reference keys by calling the dictionary with the values.
 dict[key] = value, dict[value] = key
 
 Initializing the hashBag:
-P = hashBag({2:3, 4:5})
+HB = hashBag({2:3, 4:5})
 (Must wrap the arguments in curly braces.)
 
 REFERENCE:
