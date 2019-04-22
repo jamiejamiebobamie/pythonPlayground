@@ -56,7 +56,7 @@ def climb_stairs_X(n, *X):
     return remainders
 
 
-print(climb_stairs(3))
+# print(climb_stairs(3))
 
 #if the number of possible steps are 1,2,3
 
@@ -80,4 +80,28 @@ print(climb_stairs(3))
 
 2, 2, 2"""
 
-print(climb_stairs_X(6,1,2,3,4))
+# print(climb_stairs_X(6,1,2,3,4))
+
+def stairs(n,*X):
+    def __recursive_counter(numbers,count,n,*X):
+        if n == 0:
+            return count + 1
+        for x in X:
+            print(numbers,count,x,n)
+            if n-x >= 0:
+                numbers.append(x)
+                count+=__recursive_counter(numbers,count,n-x,*X)
+            else:
+                continue
+        return count
+
+    return __recursive_counter([],0,n,*X)
+
+print(stairs(4,1,2))
+
+
+# 1, 1, 1, 1
+# 2, 1, 1
+# 1, 2, 1
+# 1, 1, 2
+# 2, 2
