@@ -82,22 +82,33 @@ def climb_stairs_X(n, *X):
 
 # print(climb_stairs_X(6,1,2,3,4))
 
+# def stairs(n,*X):
+    # def __recursive_counter(numbers,count,n,*X):
+    #     if n == 0:
+    #         return max(count, len(numbers))
+    #     for x in X:
+    #         print(numbers,x,n,count)
+    #         if n-x >= 0:
+    #             numbers.add(x)
+    #             count+=__recursive_counter(numbers,count,n-x,*X)
+    #         else:
+    #             # numbers = []
+    #             break
+    #     return max(count, len(numbers))
+    #
+    # return __recursive_counter(set(),0,n,*X)
+
 def stairs(n,*X):
-    def __recursive_counter(numbers,count,n,*X):
-        if n == 0:
-            return count + 1
+    def __recursive_counter(n,*X):
         for x in X:
-            print(numbers,count,x,n)
-            if n-x >= 0:
-                numbers.append(x)
-                count+=__recursive_counter(numbers,count,n-x,*X)
-            else:
-                continue
-        return count
+            if n == x:
+                return x
+            return __recursive_counter(n-1,x)
+    result = 0
 
-    return __recursive_counter([],0,n,*X)
-
-print(stairs(4,1,2))
+    for x in X:
+        result += __recursive_counter(n,x)
+    return result
 
 
 # 1, 1, 1, 1
@@ -105,3 +116,5 @@ print(stairs(4,1,2))
 # 1, 2, 1
 # 1, 1, 2
 # 2, 2
+
+print(stairs(4,1,2))
