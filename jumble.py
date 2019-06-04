@@ -11,7 +11,7 @@ def dict():
     return words
 
 # an array of jumbled, unsorted strings to search for
-myItems = ["tefon", "sokik", "niumem", "siconu"]
+myItems = ["tefon", "sokik", "niumem", "siconu", "tnkissin"]
 
 #an array of sorted, jumbled words
 myItems_sorted = []
