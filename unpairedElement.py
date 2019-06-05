@@ -44,4 +44,14 @@ def findUnpaired(A):
     for item in unpaired.keys():
         return item
 
-print(findUnpaired(A))
+# print(findUnpaired(A))
+
+#Jayce's solution:
+def solution(A):
+    result = 0
+    for number in A:
+        print(result)
+        result ^= number
+    return result
+
+print(solution(A))
