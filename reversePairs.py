@@ -78,6 +78,7 @@ def buildTree(A):
                     parent.right = new_node
                     # print('right')
                 else: #duplicate value
+                    # print('left')
                     parent.left = new_node
                 # print(parent.value, new_node.value)
     return root
@@ -86,32 +87,34 @@ def buildTree(A):
 def findResult(A):
     result = 0
 
-    def traverseTree(root, j, value):
+    def traverseTree(node, j, value, result=0):
         # find items in the tree that are larger than the given value
-        result = 0
-        current = root
-        while current:
+        current = node
+        if current:
             if current.value:
                 print(value, current.value)
-                if value <= current.value:
+                if value*2 < current.value:
                     if j > current.index:
                         print(j, value, current.index, current.value)
                         result += 1
-                    current = current.right
+                    return traverseTree(current.right, j, value, result) + traverseTree(current.left, j, value, result)
+                    # current = current.right
+                elif value*2 == current.value:
+                    return traverseTree(current.right, j, value, result)
                 else:
-                    current = current.left
+                    return traverseTree(current.left, j, value, result)
         return result
 
     for j, item in enumerate(reversed(A)): # O(2n)
-        result += traverseTree(root, len(A)-j-1, item*2) # O(logn)
+        result += traverseTree(root, len(A)-j-1, item) # O(logn)
     return result
 
 A = [2,4,3,5,1] # 3
 B = [1,3,2,3,1] # 2
 
 # not working...
-root = buildTree(A)
-print(findResult(A))
+root = buildTree(B)
+print(findResult(B))
 # time complexity == 3nlogn
 # O(n) to build the binary tree
 # O(n)
