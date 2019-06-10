@@ -47,6 +47,7 @@ def targetSum(A, target):
         i+=1
     if len(A) % 2:
         # i fixed it for this example... wish the website provided more test cases.
+        # it's not right...
         difference = sumOfArray - target
         difference = difference - A[-1] - A[-2]
         if difference == 0:
