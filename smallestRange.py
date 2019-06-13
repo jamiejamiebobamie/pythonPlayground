@@ -56,11 +56,12 @@ def smallRange(A):
                 test = a[dict[i][1]]
                 number_to_pass = 0
                 for a in A:
-                    for num in a:
-                        if num > test:
+                    for num in reversed(a):
+                        if num < test:
                             number_to_pass += 1
                 if number_to_pass == num_of_k_sorted_arrays:
                     smallest_range[1] = test
+
             if dict[i][0] - 1 > 0:
                 dict[i][1] -= 1
 
