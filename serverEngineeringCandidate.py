@@ -30,7 +30,7 @@ class Dungeon:
         # builds out the world space creating 3d coordinates in a number x number x number block
         # first generates a random boolean to declare if the room is transparent or not.
         # if it is transparent, add it to the dictionary of the world
-        # solid rooms are not stored to reduce storage
+        # solid rooms are not stored.
         if x == None or y == None or z == None:
             x = y = z = self.n
         if number == None:
@@ -67,7 +67,9 @@ class Dungeon:
         if n == None:
             n = 1
         for _ in range(n):
-            self.players[self.n+_] = self.Player(name,adventurerType,background, self.world[0,0,0])
+            new_player = self.Player(name,adventurerType,background, self.world[0,0,0])
+            self.players[self.n+_] = new_player
+            self.world[0,0,0].players[self.n+_] = new_player
         self.numberOfPlayers += n
         #addRooms() modifies the self.n and self.numberOfPlayers and must be called after instantiating the correct number of players
         # in this function
@@ -78,12 +80,34 @@ class Dungeon:
         test = tuple(test)
         # print(test)
         if test in self.world:
+            for room_occupants in self.world[test].players:
+                if player == room_occupants:
+                    del self.world[test].players[room_occupants]
             player.room = self.world[test]
+            # self.world[test].players[player] =
             self.world[test].setDescription()
             return "You moved " + direction + "."
         else:
             return "There is nothing that way."
 
+    def whereMove(self, player):
+        directions = ["north","south","east","west","up","down"]
+        moves = []
+        for direction in directions:
+            test = player.move(direction)
+            test = tuple(test)
+            if test in self.world:
+                moves.append("You can move " + direction + ".")
+        return moves
+
+    def addYells(self, yeller, content):
+        for player in self.world:
+            if player.quietMode == False:
+                player.DialogList.addNode(content)
+
+    def addTell(self, player, content):
+        if player in self.world:
+            self.world[player].DialogList.addNode(content)
 
     class Room:
         def __init__(self, x, y, z, description=None):
@@ -96,14 +120,12 @@ class Dungeon:
             self.items = {}
             self.monsters = {}
 
-
         def setDescription(self, userInput=None):
             if self.description == None:
                 self.description == userInput
                 # print("it worked.")
             else:
                 print(self.description)
-
 
     class Player:
         def __init__(self, name, adventurerType, background, room):
@@ -112,48 +134,59 @@ class Dungeon:
             self.background = background
             self.friends = {}
             self.room = room
-            self.dialog = self.DialogList
+            self.dialog = self.DialogList()
             self.quietMode = False
 
         def move(self, direction):
             direction_lookup = {"north":[0,1,0], "south":[0,-1,0], "east":[1,0,0], "west":[-1,0,0], "up":[0,0,1], "down":[0,0,-1]}
+            # direction = tuple(direction)
             test = direction_lookup[direction]
             for i, item in enumerate(self.room.coordinate):
                 test[i] += item
             return test
 
-        def say(self):
-            pass
+        def say(self, content):
+            for player in self.room.players:
+                self.room.players[player].dialog.addNode(content, self)
 
-        def tell(self, player):
-            player.room.players
-            pass
+        # def tell(self, player, content):
+        #     return player, content
 
-        def yell(self):
-            pass
+        # def yell(self, content):
+        #     return content
 
         class DialogList:
-            def __init__(self, head=None, tail=None, maxNodes=10):
+            def __init__(self, head=None, tail=None, maxNodes=5):
                 self.head = head
                 self.tail = tail
                 self.numberOfNodes = 0
                 self.maxNodes = maxNodes
 
             class DialogNode:
-                def __init__(self, previous=None, next=None, content=""):
-                    self.previous = previous
-                    self.next = next
+                def __init__(self, content="", player=None):
+                    self.previous = None
+                    self.next = None
                     self.content = content
+                    self.speaker = player
 
-            def addNode(content):
-                new_node = DialogNode(content)
-                if self.numberOfNodes + 1 > self.maxNodes:
+            def addNode(self, content, speaker):
+                new_node = self.DialogNode(content, speaker)
+                self.numberOfNodes += 1
+                if self.numberOfNodes > self.maxNodes:
                     self.head = self.head.next
                     self.head.previous = None
                 if self.head == None:
-                    self.head = new_node
+                    self.head = self.tail = new_node
                 self.tail.next = new_node
                 self.tail = new_node
+
+            def showDialog(self):
+                content = []
+                node = self.head
+                while node:
+                    content.append(node.content)
+                    node = node.next
+                return content
 
     class Item:
         def __init__(self, name, description):
@@ -181,5 +214,27 @@ newDungeon.addPlayers(5)
 # for room in newDungeon.world:
 #     print(room)
 
-# print(newDungeon.players[0].move("west"))
-print(newDungeon.testMove(newDungeon.players[0],"east"))
+print(newDungeon.players[0].move("west"))
+# print(newDungeon.players[0].room.players)
+# newDungeon.players[0].say("1!")
+# newDungeon.players[0].say("2!")
+# newDungeon.players[0].say("3!")
+# newDungeon.players[0].say("4!")
+# newDungeon.players[0].say("5!")
+# newDungeon.players[0].say("6!")
+# newDungeon.players[0].say("7!")
+# newDungeon.players[0].say("8!")
+# newDungeon.players[0].say("9!")
+# newDungeon.players[0].say("10!")
+# print(newDungeon.players[0].dialog.showDialog())
+# print(newDungeon.players[1].dialog.showDialog())
+for _ in range(100):
+    print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("west")))
+    print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("east")))
+    print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("north")))
+    print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("south")))
+    print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("up")))
+    print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("down")))
+
+
+# print(newDungeon.whereMove(newDungeon.players[1]))
