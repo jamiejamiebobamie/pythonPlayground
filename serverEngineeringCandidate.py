@@ -11,7 +11,6 @@ class Dungeon:
         self.numberOfPlayers = numberOfPlayers
         self.addRooms(numberOfRooms)
 
-
     def permute(self, a):
         array = a
         permutations = set()
@@ -93,7 +92,7 @@ class Dungeon:
             self.z=z
             self.coordinate = [x,y,z]
             self.description = None
-            self.players = {}
+            self.players = {} # need to update upon player instantiation and on player.move()
             self.items = {}
             self.monsters = {}
 
@@ -113,7 +112,8 @@ class Dungeon:
             self.background = background
             self.friends = {}
             self.room = room
-            self.dialog = None#LinkedList() #need to make.
+            self.dialog = self.DialogList
+            self.quietMode = False
 
         def move(self, direction):
             direction_lookup = {"north":[0,1,0], "south":[0,-1,0], "east":[1,0,0], "west":[-1,0,0], "up":[0,0,1], "down":[0,0,-1]}
@@ -122,14 +122,38 @@ class Dungeon:
                 test[i] += item
             return test
 
-        def tell(self):
+        def say(self):
             pass
 
-        def speak(self, player):
+        def tell(self, player):
+            player.room.players
             pass
 
         def yell(self):
             pass
+
+        class DialogList:
+            def __init__(self, head=None, tail=None, maxNodes=10):
+                self.head = head
+                self.tail = tail
+                self.numberOfNodes = 0
+                self.maxNodes = maxNodes
+
+            class DialogNode:
+                def __init__(self, previous=None, next=None, content=""):
+                    self.previous = previous
+                    self.next = next
+                    self.content = content
+
+            def addNode(content):
+                new_node = DialogNode(content)
+                if self.numberOfNodes + 1 > self.maxNodes:
+                    self.head = self.head.next
+                    self.head.previous = None
+                if self.head == None:
+                    self.head = new_node
+                self.tail.next = new_node
+                self.tail = new_node
 
     class Item:
         def __init__(self, name, description):
