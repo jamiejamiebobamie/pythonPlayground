@@ -79,11 +79,12 @@ class Dungeon:
         if test in self.world:
             for room_occupant in player.room.players:
                 if player.index == room_occupant:
-                    print(player.index)
+                    # print(player.index)
                     del player.room.players[room_occupant]
                     break
             player.room = self.world[test]
             self.world[test].setDescription()
+            self.world[test].players[player.index] = player
             return "You move " + direction + "."
         else:
             return "There is nothing that way."
@@ -192,3 +193,7 @@ class Dungeon:
 
 newDungeon = Dungeon()
 newDungeon.addPlayers(15)
+#
+# print(newDungeon.players[10].room.coordinate,len(newDungeon.world[0,0,0].players), len(newDungeon.world[1,0,0].players))
+# print(newDungeon.testMove(newDungeon.players[10],"east"))
+# print(newDungeon.players[10].room.coordinate,len(newDungeon.world[0,0,0].players), len(newDungeon.world[1,0,0].players))
