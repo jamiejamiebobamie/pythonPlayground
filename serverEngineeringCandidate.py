@@ -3,12 +3,13 @@
 import random
 
 class Dungeon:
-    def __init__(self,numberOfRooms=None,numberOfPlayers=0):
+    def __init__(self,numberOfRooms=10,numberOfPlayers=0):
         # self.numberOfRooms = numberOfRooms
         self.world = {}
-        self.n = 0 # size of world, scales with number of players
+        self.n = numberOfPlayers # size of world, scales with number of players
         self.players = {}
         self.numberOfPlayers = numberOfPlayers
+        self.playerSpawn = None
         self.addRooms(numberOfRooms)
 
     def permute(self, a):
@@ -35,10 +36,12 @@ class Dungeon:
             x = y = z = self.n
         if number == None:
             number = self.numberOfPlayers
-        self.n = number
+        self.n += number
         # print(self.n, number)
         while x < number:
             coordinate = [x,y,z]
+            if self.playerSpawn == None:
+                self.playerSpawn = tuple(coordinate)
             for coord in self.permute(coordinate):
                 if bool(random.getrandbits(1)):
                     self.world[coord] = self.Room(coord[0], coord[1], coord[2])
@@ -67,18 +70,19 @@ class Dungeon:
         if n == None:
             n = 1
         for _ in range(n):
-            new_player = self.Player(name,adventurerType,background, self.world[0,0,0])
-            self.players[self.n+_] = new_player
-            self.world[0,0,0].players[self.n+_] = new_player
+            new_player = self.Player(name,adventurerType,background, self.world[self.playerSpawn])
+            self.players[self.numberOfPlayers+_] = new_player
+            self.world[0,0,0].players[self.numberOfPlayers+_] = new_player
         self.numberOfPlayers += n
         #addRooms() modifies the self.n and self.numberOfPlayers and must be called after instantiating the correct number of players
         # in this function
         self.addRooms()
 
     def testMove(self, player, direction):
+        print(direction, type(direction))
         test = player.move(direction)
+        print(test, type(test))
         test = tuple(test)
-        # print(test)
         if test in self.world:
             for room_occupants in self.world[test].players:
                 if player == room_occupants:
@@ -140,7 +144,10 @@ class Dungeon:
         def move(self, direction):
             direction_lookup = {"north":[0,1,0], "south":[0,-1,0], "east":[1,0,0], "west":[-1,0,0], "up":[0,0,1], "down":[0,0,-1]}
             # direction = tuple(direction)
+            # print(direction)
             test = direction_lookup[direction]
+            # test = tuple(test)
+
             for i, item in enumerate(self.room.coordinate):
                 test[i] += item
             return test
@@ -198,43 +205,34 @@ class Dungeon:
             self.name = name
             self.description = description
 
-
-
 newDungeon = Dungeon()
-newDungeon.addPlayers(5)
-# print(len(newDungeon.world.keys()))
-# for key in newDungeon.world.keys():
-#     print(key)
-# for player in newDungeon.players.keys():
-#     print(player)
+newDungeon.addPlayers(15)
 
-# for player in newDungeon.players:
-#     print(newDungeon.players[player].room.coordinate)
+print(newDungeon.players[8])
+newDungeon.players[8].quietMode = True
+print(newDungeon.players[8].room.coordinate)
+print(newDungeon.players[9].room.coordinate)
+print(newDungeon.players[8].dialog.showDialog())
+print(newDungeon.players[9].dialog.showDialog())
 
-# for room in newDungeon.world:
-#     print(room)
+newDungeon.players[8].say("Hello!")
 
-print(newDungeon.players[0].move("west"))
-# print(newDungeon.players[0].room.players)
-# newDungeon.players[0].say("1!")
-# newDungeon.players[0].say("2!")
-# newDungeon.players[0].say("3!")
-# newDungeon.players[0].say("4!")
-# newDungeon.players[0].say("5!")
-# newDungeon.players[0].say("6!")
-# newDungeon.players[0].say("7!")
-# newDungeon.players[0].say("8!")
-# newDungeon.players[0].say("9!")
-# newDungeon.players[0].say("10!")
-# print(newDungeon.players[0].dialog.showDialog())
-# print(newDungeon.players[1].dialog.showDialog())
-for _ in range(100):
-    print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("west")))
-    print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("east")))
-    print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("north")))
-    print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("south")))
-    print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("up")))
-    print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("down")))
+newDungeon.addYells(newDungeon.players[7], "Hi")
+
+
+# print(newDungeon.players[0].move("east"))
+# print(newDungeon.testMove(newDungeon.players[0],"east"))
+
+
+
+
+# for _ in range(100):
+#     print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("west")))
+#     print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("east")))
+#     print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("north")))
+#     print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("south")))
+#     print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("up")))
+#     print(newDungeon.testMove(newDungeon.players[0],newDungeon.players[0].move("down")))
 
 
 # print(newDungeon.whereMove(newDungeon.players[1]))
