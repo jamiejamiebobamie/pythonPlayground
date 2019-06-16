@@ -1,16 +1,19 @@
 import random
 
 class Dungeon:
-    def __init__(self,numberOfRooms=10,numberOfPlayers=0):
-        # self.numberOfRooms = numberOfRooms
+    def __init__(self, numberOfPlayers=1):
         self.world = {}
-        self.n = numberOfPlayers # size of world, scales with number of players
         self.players = {}
+
+        self.n = 0 # size of world, scales with number of players
         self.numberOfPlayers = numberOfPlayers
-        self.playerSpawn = None
-        self.addRooms(numberOfRooms)
+        self.playerSpawn = (self.n, self.n, self.n)
+        self.playerSpawn = (7,7,7)
+        self.addRooms(numberOfPlayers)
 
     def permute(self, a):
+        # takes in an array of x,y,z coordinates
+        # returns a set of all the unique permutations of that array's items.
         array = a
         permutations = set()
         def __helper(a, l, r):
@@ -18,50 +21,56 @@ class Dungeon:
                 perm = tuple(a)
                 permutations.add(perm)
             else:
-                for i in xrange(l,r+1):
+                for i in range(l,r+1):
                     a[l], a[i] = a[i], a[l]
                     __helper(a, l+1, r)
                     a[l], a[i] = a[i], a[l]
             return permutations
         return __helper(array, 0, 2)
 
+
+# BROKEN
     def addRooms(self, number=None, x=None, y=None, z=None):
-        # builds out the world space creating 3d coordinates in a number x number x number block
+        # builds out the world space creating 3d coordinates in a number by number by number block
         # first generates a random boolean to declare if the room is transparent or not.
         # if it is transparent, add it to the dictionary of the world
         # solid rooms are not stored.
         if x == None or y == None or z == None:
-            x = y = z = self.n
+            x = y = z = self.n # set the starting coordinate
         if number == None:
-            number = self.numberOfPlayers
-        self.n += number
-        while x < number:
+            number = self.numberOfPlayers # set the number to iterate to
+        self.n += number # set the new starting coordinate for next time.
+        while x < number: # iterate from the starting coordinate to the iteration number for x
             coordinate = [x,y,z]
-            if self.playerSpawn == None:
-                self.playerSpawn = tuple(coordinate)
             for coord in self.permute(coordinate):
-                if bool(random.getrandbits(1)):
-                    self.world[coord] = self.Room(coord[0], coord[1], coord[2])
+                # if bool(random.getrandbits(1)) or coord == list(self.playerSpawn):
+                print(coord)
+                self.world[coord] = self.Room(coord[0], coord[1], coord[2])
             x+=1
-        else:
+        # else:
             while y < number:
                 coordinate = [x,y,z]
                 for coord in self.permute(coordinate):
-                    if bool(random.getrandbits(1)):
-                        self.world[coord] = self.Room(coord[0], coord[1], coord[2])
+                    # if bool(random.getrandbits(1)) or coord == list(self.playerSpawn):
+                    print(coord)
+                    self.world[coord] = self.Room(coord[0], coord[1], coord[2])
                 y+=1
-            else:
+            # else:
                 while z < number:
                     coordinate = [x,y,z]
                     for coord in self.permute(coordinate):
-                        if bool(random.getrandbits(1)):
-                            self.world[coord] = self.Room(coord[0], coord[1], coord[2])
+                        # if bool(random.getrandbits(1)) or coord == list(self.playerSpawn):
+                        print(coord)
+                        self.world[coord] = self.Room(coord[0], coord[1], coord[2])
                     z+=1
                 else:
                     coordinate = [x,y,z]
                     for coord in self.permute(coordinate):
-                        if bool(random.getrandbits(1)):
-                            self.world[coord] = self.Room(coord[0], coord[1], coord[2])
+                        # if bool(random.getrandbits(1)) or coord == list(self.playerSpawn):
+                        print(coord)
+                        self.world[coord] = self.Room(coord[0], coord[1], coord[2])
+        # self.n = self.numberOfPlayers
+        # self.playerSpawn = (self.n, self.n, self.n)
 
     def addPlayers(self, n=None, name=None, adventurerType=None, background=None):
         if n == None:
@@ -69,7 +78,7 @@ class Dungeon:
         for _ in range(n):
             new_player = self.Player(self.numberOfPlayers+_, name,adventurerType,background, self.world[self.playerSpawn])
             self.players[self.numberOfPlayers+_] = new_player
-            self.world[0,0,0].players[self.numberOfPlayers+_] = new_player
+            self.world[self.playerSpawn].players[self.numberOfPlayers+_] = new_player
         self.numberOfPlayers += n
         self.addRooms()
 
@@ -191,9 +200,10 @@ class Dungeon:
             self.name = name
             self.description = description
 
-newDungeon = Dungeon()
-newDungeon.addPlayers(15)
-#
-# print(newDungeon.players[10].room.coordinate,len(newDungeon.world[0,0,0].players), len(newDungeon.world[1,0,0].players))
-# print(newDungeon.testMove(newDungeon.players[10],"east"))
-# print(newDungeon.players[10].room.coordinate,len(newDungeon.world[0,0,0].players), len(newDungeon.world[1,0,0].players))
+newDungeon = Dungeon(10)
+# newDungeon.addPlayers(10)
+
+print(len(newDungeon.world)) # == 110, should be 1000 
+
+for player in newDungeon.players:
+    print(newDungeon.players[player].room.coordinate)
