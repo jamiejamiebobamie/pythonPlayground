@@ -130,21 +130,11 @@ class Dungeon:
                 self.players[player].dialog.addNode(content,speaker)
 
     def addTell(self, content, listener, speaker):
-        if listener in self.players:
-            self.players[listener].dialog.addNode(content, speaker)
+        listener.dialog.addNode(content, speaker)
 
     def runGame(self):
-        # inp_LOOKUP = {"east": self.testMove(self.players[1], "east"),
-        #                 "west": self.testMove(self.players[1], "west"),
-        #                 "north": self.testMove(self.players[1],"north"),
-        #                 "south": self.testMove(self.players[1], "south"),
-        #                 "up": self.testMove(self.players[1], "up"),
-        #                 "down": self.testMove(self.players[1], "down"),
-        #                 "moves": self.whereMove(self.players[1]),
-        #                 None: input("\n\nWhat would you like to do?\n\n")}
-
         inp = None
-        print("And so the adventure begins! Enter 'east', 'west', 'north', 'south', 'up', or 'down' to move in one of those directions and enter 'where' to see which directions are available to you to move in. Enter 'x' to leave this world.")
+        print("And so the adventure begins! \n\n Enter 'east', 'west', 'north', 'south', 'up', or 'down' to move in one of those directions. \n\n Enter 'where' to see which directions are available to you to move in. \n\n You can type 'say' to tell the people in the same room something, 'yell' to tell everyone in the world something, and 'tell' to tell someone whose name you know something. \n\n Type 'quiet' to turn on and off quiet mode. \n\n Enter 'x' to leave this world.")
         while inp != "x":
             if inp == "east":
                 self.testMove(self.players[1], "east")
@@ -160,10 +150,26 @@ class Dungeon:
                 self.testMove(self.players[1], "down")
             elif inp == "where":
                 self.whereMove(self.players[1])
+            elif inp == "say":
+                content = str(input("\n\nWhat would you like to say?\n\n"))
+                self.addSays(content, self.players[1])
+            elif inp == "tell":
+                person_to_speak_to = str(input("\n\nWho would you like to speak to?\n\n"))
+                print(person_to_speak_to)
+                for people in self.players:
+                    print(people, person_to_speak_to, self.players[people].name, person_to_speak_to == self.players[people].name)
+                    if person_to_speak_to == self.players[people].name:
+                        listener = self.players[people]
+                content = str(input("\n\nWhat would you like to say?\n\n"))
+                self.addTell(content, listener, self.players[1])
+            elif inp == "yell":
+                content = str(input("\n\nWhat would you like to say?\n\n"))
+                self.addYells(content, self.players[1])
+            elif inp == "quiet":
+                self.players[1].quiet()
+            print(self.players[1].dialog.showDialog())
             self.whereMove(self.players[1])
             inp = str(input("\n\nWhat would you like to do?\n\n"))
-
-
 
     class Room:
         def __init__(self, x, y, z, description=None):
@@ -180,10 +186,6 @@ class Dungeon:
             room_occupants = ["In this room with you is..."]
             if self.description == None:
                 self.description = input("\n\nYou are the first to arrive to this part of the dungeon. What do you see?\n\n")
-                # if userInput == "":
-                #     self.description = "This is a barren land of waste and demise."
-                #     print(self.coordinate, self.description, self.players[1].index, self.items, self.monsters)
-            # else:
             for player in self.players:
                 room_occupants.append(str(self.players[player].name) + " the " + str(self.players[player].adventurerType) + " from " + str(self.players[player].background))
             print(self.coordinate, self.description, room_occupants)
@@ -205,6 +207,14 @@ class Dungeon:
             for i, item in enumerate(self.room.coordinate):
                 test[i] += item
             return test
+
+        def quiet(self):
+            if self.quietMode:
+                print("Quiet Mode is off.")
+                self.quietMode = False
+            else:
+                print("Quiet Mode is on.")
+                self.quietMode = True
 
         class DialogList:
             def __init__(self, head=None, tail=None, maxNodes=5):
@@ -240,6 +250,7 @@ class Dungeon:
                     node = node.next
                 return content
 
+
     class Item:
         def __init__(self, name, description):
             self.name = name
@@ -250,7 +261,5 @@ class Dungeon:
             self.name = name
             self.description = description
 
-
 newDungeon = Dungeon(1)
-# print(len(newDungeon.world))
 newDungeon.runGame()
