@@ -9,7 +9,7 @@ class Dungeon:
         self.numberOfPlayers = numberOfPlayers
         self.playerSpawn = (self.n, self.n, self.n)
         self.playerSpawn = (1,1,1)
-        self.addRooms(numberOfPlayers)
+        self.addRooms(numberOfPlayers*5)
         self.addPlayers()
 
     def permute(self, a):
@@ -40,40 +40,60 @@ class Dungeon:
         while x < number and len(self.world) < self.roomCap:
             coordinate = [x,y,z]
             for coord in self.permute(coordinate):
-                if random.randrange(100) < 90:
-                    print(coord)
+                print(coord, self.playerSpawn, coord == self.playerSpawn)
+                if coord == self.playerSpawn:
+                    print("yayayay")
+                    self.world[coord] = self.Room(self.playerSpawn[0], self.playerSpawn[1], self.playerSpawn[2])
+                elif random.choice([True, False]):
+                    # print(coord)
                     self.world[coord] = self.Room(coord[0], coord[1], coord[2])
             x+=1
             y=0
             while y < number and len(self.world) < self.roomCap:
                 coordinate = [x,y,z]
                 for coord in self.permute(coordinate):
-                    if random.randrange(100) < 90:
-                        print(coord)
+                    print(coord, self.playerSpawn, coord == self.playerSpawn)
+                    if coord == self.playerSpawn:
+                        print("yayayay")
+                        self.world[coord] = self.Room(self.playerSpawn[0], self.playerSpawn[1], self.playerSpawn[2])
+                    elif random.choice([True, False]):
+                        # print(coord)
                         self.world[coord] = self.Room(coord[0], coord[1], coord[2])
                 y+=1
                 z=0
                 while z < number and len(self.world) < self.roomCap:
                     coordinate = [x,y,z]
                     for coord in self.permute(coordinate):
-                        if random.randrange(100) < 90:
-                            print(coord)
+                        print(coord, self.playerSpawn, coord == self.playerSpawn)
+                        if coord == self.playerSpawn:
+                            print("yayayay")
+                            self.world[coord] = self.Room(self.playerSpawn[0], self.playerSpawn[1], self.playerSpawn[2])
+                        elif random.choice([True, False]):
+                            # print(coord)
                             self.world[coord] = self.Room(coord[0], coord[1], coord[2])
                     z+=1
                 else:
                     coordinate = [x,y,z]
                     for coord in self.permute(coordinate):
-                        if random.randrange(100) < 90 or tuple(coordinate) == self.playerSpawn:
-                            print(coord)
+                        print(coord, self.playerSpawn, coord == self.playerSpawn)
+                        if coord == self.playerSpawn:
+                            print("yayayay")
+                            self.world[coord] = self.Room(self.playerSpawn[0], self.playerSpawn[1], self.playerSpawn[2])
+                        elif random.choice([True, False]):
+                            # print(coord)
                             self.world[coord] = self.Room(coord[0], coord[1], coord[2])
 
     def addPlayers(self, n=1, name=None, adventurerType=None, background=None):
         for _ in range(n):
-            new_player = self.Player(self.numberOfPlayers+_, name,adventurerType,background, self.world[self.playerSpawn])
+            name = input("\n\nHello, adventurer. What is thy name? \n\n")
+            background = input("\n\nOh cool. Where does thee hail from and praytell what is thy background? \n\n")
+            adventurerType = input("\n\nIn a word, what type of adventurer are thee? \n\n")
+
+            new_player = self.Player(self.numberOfPlayers+_, name,adventurerType,background, self.world[tuple(self.playerSpawn)])
             self.players[self.numberOfPlayers+_] = new_player # add the player to the dungeon's player dictionary
-            self.world[self.playerSpawn].players[self.numberOfPlayers+_] = new_player # add the player to the spawn-room's player dictionary
+            self.world[tuple(self.playerSpawn)].players[self.numberOfPlayers+_] = new_player # add the player to the spawn-room's player dictionary
         self.numberOfPlayers+=n
-        self.addRooms(n)
+        self.addRooms(n*5)
 
     def testMove(self, player, direction):
         test = player.move(direction)
@@ -83,9 +103,11 @@ class Dungeon:
             self.world[test].players[player.index] = player # change the room's player dictionary to include a reference to the player
             player.room = self.world[test] # change the player's room attribute to reference the Room object in the dungeon's world dictionary
             self.world[test].setDescription() # run setDescription() method
-            return "You move " + direction + "."
+            print("You move " + direction + ".")
+            # return "You move " + direction + "."
         else:
-            return "There is nothing that way."
+            print("There is nothing that way.")
+            # return "There is nothing that way."
 
     def whereMove(self, player):
         directions = ["north","south","east","west","up","down"]
@@ -95,7 +117,8 @@ class Dungeon:
             test = tuple(test)
             if test in self.world:
                 moves.append(direction)
-        return moves
+        print(moves)
+        # return moves
 
     def addSays(self, content, speaker):
         for player in speaker.room.players:
@@ -110,6 +133,38 @@ class Dungeon:
         if listener in self.players:
             self.players[listener].dialog.addNode(content, speaker)
 
+    def runGame(self):
+        # inp_LOOKUP = {"east": self.testMove(self.players[1], "east"),
+        #                 "west": self.testMove(self.players[1], "west"),
+        #                 "north": self.testMove(self.players[1],"north"),
+        #                 "south": self.testMove(self.players[1], "south"),
+        #                 "up": self.testMove(self.players[1], "up"),
+        #                 "down": self.testMove(self.players[1], "down"),
+        #                 "moves": self.whereMove(self.players[1]),
+        #                 None: input("\n\nWhat would you like to do?\n\n")}
+
+        inp = None
+        print("And so the adventure begins! Enter 'east', 'west', 'north', 'south', 'up', or 'down' to move in one of those directions and enter 'where' to see which directions are available to you to move in. Enter 'x' to leave this world.")
+        while inp != "x":
+            if inp == "east":
+                self.testMove(self.players[1], "east")
+            elif inp == "west":
+                self.testMove(self.players[1], "west")
+            elif inp == "north":
+                self.testMove(self.players[1],"north")
+            elif inp == "south":
+                self.testMove(self.players[1], "south")
+            elif inp == "up":
+                self.testMove(self.players[1], "up")
+            elif inp == "down":
+                self.testMove(self.players[1], "down")
+            elif inp == "where":
+                self.whereMove(self.players[1])
+            self.whereMove(self.players[1])
+            inp = str(input("\n\nWhat would you like to do?\n\n"))
+
+
+
     class Room:
         def __init__(self, x, y, z, description=None):
             self.x=x
@@ -122,19 +177,22 @@ class Dungeon:
             self.monsters = {}
 
         def setDescription(self, userInput=None):
+            room_occupants = ["In this room with you is..."]
             if self.description == None:
-                self.description = userInput
-                if userInput == None:
-                    self.description = "This is a barren land of waste and demise."
-                    print(self.coordinate, self.description, self.players[1].index, self.items, self.monsters)
-            else:
-                print(self.coordinate, self.description, self.players, self.items, self.monsters)
+                self.description = input("\n\nYou are the first to arrive to this part of the dungeon. What do you see?\n\n")
+                # if userInput == "":
+                #     self.description = "This is a barren land of waste and demise."
+                #     print(self.coordinate, self.description, self.players[1].index, self.items, self.monsters)
+            # else:
+            for player in self.players:
+                room_occupants.append(str(self.players[player].name) + " the " + str(self.players[player].adventurerType) + " from " + str(self.players[player].background))
+            print(self.coordinate, self.description, room_occupants)
 
     class Player:
         def __init__(self, index, name, adventurerType, background, room):
             self.index = index
             self.name = name
-            self.type = adventurerType
+            self.adventurerType = adventurerType
             self.background = background
             self.friends = {}
             self.room = room
@@ -192,16 +250,7 @@ class Dungeon:
             self.name = name
             self.description = description
 
-newDungeon = Dungeon()
-newDungeon.addPlayers(100)
 
-move = newDungeon.whereMove(newDungeon.players[1])
-# moves = set()
-
-# while move and move not in moves:
-#     moves.add(move)
-#     print(newDungeon.testMove(newDungeon.players[1], move))
-#     move = newDungeon.whereMove(newDungeon.players[1])
-
-# print(newDungeon.whereMove(newDungeon.players[1]))
-# print(newDungeon.testMove(newDungeon.players[1],"west"))
+newDungeon = Dungeon(1)
+# print(len(newDungeon.world))
+newDungeon.runGame()
