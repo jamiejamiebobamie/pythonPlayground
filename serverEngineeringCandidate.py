@@ -88,7 +88,6 @@ class Dungeon:
             name = input("\n\nHello, adventurer. What is thy name? \n\n")
             background = input("\n\nOh cool. Where does thee hail from and praytell what is thy background? \n\n")
             adventurerType = input("\n\nIn a word, what type of adventurer are thee? \n\n")
-
             new_player = self.Player(self.numberOfPlayers+_, name,adventurerType,background, self.world[tuple(self.playerSpawn)])
             self.players[self.numberOfPlayers+_] = new_player # add the player to the dungeon's player dictionary
             self.world[tuple(self.playerSpawn)].players[self.numberOfPlayers+_] = new_player # add the player to the spawn-room's player dictionary
@@ -178,7 +177,7 @@ class Dungeon:
             self.z=z
             self.coordinate = [x,y,z]
             self.description = None
-            self.players = {} # need to update upon player instantiation and on player.move()
+            self.players = {}
             self.items = {}
             self.monsters = {}
 
@@ -260,6 +259,18 @@ class Dungeon:
         def __init__(self, name, description):
             self.name = name
             self.description = description
+
+"""
+NOTES: As this is a locally-run simulation there aren't any race conditions to consider,
+but if this was deployed onto the internet with multiple users, issues might arise with the dialog list.
+To be perfectly honest, I am not familiar with race conditions beyond the couple of pages about it in a coding book.
+
+Also if given more time, I could possibly build a live version of this with node.js and mongodb.
+
+To run the simulation locally, clone the github repo, navigate to the folder in your terminal, and type "python3 mud.py".
+
+Thank you!
+"""
 
 newDungeon = Dungeon(1)
 newDungeon.runGame()
