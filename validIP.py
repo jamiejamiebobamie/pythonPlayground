@@ -54,6 +54,5 @@ print(isValid(IP_address))
 IP_address = '1.12.cool.45.255'
 print(isValid(IP_address))
 
-
 IP_address = '000.12.1.45.255'
 print(isValid(IP_address))
