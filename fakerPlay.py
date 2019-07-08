@@ -1,16 +1,16 @@
 # https://faker.readthedocs.io/en/master/
 
 from faker import Faker
-fake = Faker()
+fake = Faker('it_IT')
 
-fake.name()
+# fake.name()
 # 'Lucy Cechtelar'
 
-fake.address()
+# fake.address()
 # '426 Jordy Lodge
 #  Cartwrightshire, SC 88120-6700'
 
-fake.text()
+# fake.text()
 # 'Sint velit eveniet. Rerum atque repellat voluptatem quia rerum. Numquam excepturi
 #  beatae sint laudantium consequatur. Magni occaecati itaque sint et sit tempore. Nesciunt
 #  amet quidem. Iusto deleniti cum autem ad quia aperiam.
@@ -21,9 +21,10 @@ fake.text()
 #  Ea quaerat et quisquam. Deleniti sunt quam. Adipisci consequatur id in occaecati.
 #  Et sint et. Ut ducimus quod nemo ab voluptatum.'
 
+print(fake.job())
 
-for _ in range(10):
-  print(fake.name())
+# for _ in range(10):
+#   print(fake.name())
 
 # 'Adaline Reichel'
 # 'Dr. Santa Prosacco DVM'
