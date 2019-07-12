@@ -47,6 +47,10 @@ class LinkedListNode():
         self.last = last
 
 def delete_N_NodeOfLL(LL, n):
+    """This method creates a new LinkedList called "sublist" that is of length n or less.
+    It runs in O(m) time (m, being the length of the LL), but requires O(n) storage.
+    Since we only need a pointer to a single node to be deleted. It's not optimal, considering the storage requirements.
+    """
     if n <= 0:
         return
     sublist = LinkedList()
