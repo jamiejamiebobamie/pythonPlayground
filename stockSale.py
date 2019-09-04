@@ -97,13 +97,12 @@ if the boolean is false, check for valid min/max.
 
     if bool is never set to true then the array is sorted in descending order
 
-
-
-
-
 """
 
 def findMaxPrice(A):
+    """This method works for the given test inputs, but I am not sure if it works on all
+    array configurations...
+    """
     minIndex = 0
     maxIndex = 1
     valid = False
